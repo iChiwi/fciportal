@@ -1,0 +1,402 @@
+@use "../core/variables" as *;
+@use "../core/mixins" as *;
+
+// Common Section Styles
+%section-base {
+  margin-bottom: $spacing-xl;
+
+  h2 {
+    margin-bottom: $spacing-md;
+    position: relative;
+    display: inline-block;
+
+    &::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      bottom: -4px;
+      height: 2px;
+      width: 100%;
+      background: $gradient-primary;
+      border-radius: $border-radius-pill;
+    }
+
+    i {
+      margin-left: $spacing-xs;
+      color: $color-primary;
+    }
+  }
+}
+
+// Card Base Styles
+%card-base {
+  background: $container-light;
+  border-radius: $border-radius-lg;
+  box-shadow: $base-shadow;
+  padding: $spacing-xl;
+
+  &:hover {
+    box-shadow: $card-shadow;
+  }
+}
+
+.features-grid {
+  display: grid;
+  gap: $spacing-lg;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  margin: $spacing-xl 0;
+  width: 100%;
+}
+
+// Feature Card Component
+.feature-card {
+  @extend %card-base;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  @include transition(transform);
+  touch-action: manipulation;
+  border-right: 0;
+  color: inherit;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      45deg,
+      color-light($color-primary, 0.05) 0%,
+      transparent 100%
+    );
+    z-index: -1;
+    display: block;
+  }
+
+  h3 {
+    color: $text-light;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: $spacing-sm 0;
+  }
+
+  i {
+    color: $color-primary;
+    font-size: 2.5rem;
+    margin-bottom: $spacing-md;
+    background-color: color-light($color-primary, 0.1);
+    height: 64px;
+    width: 64px;
+    @include flex-center;
+    border-radius: 50%;
+    @include transition(all);
+  }
+
+  p {
+    color: darken($text-light, 15%);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  &:hover,
+  &:active {
+    transform: translateY(-2px);
+
+    i {
+      background-color: $color-primary;
+      color: $color-white;
+    }
+  }
+}
+
+// Help & Contact Components
+.help-card {
+  @extend %card-base;
+  margin: $spacing-lg 0;
+  border-right: 4px solid $color-primary;
+
+  p {
+    color: $text-light;
+    line-height: 1.6;
+    margin: 0 0 $spacing-lg;
+  }
+}
+
+.contact-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-md;
+  margin: $spacing-lg 0;
+  position: relative;
+  z-index: 10;
+  justify-content: space-between;
+}
+
+.contact-link {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  background-color: $container-light;
+  padding: $spacing-md $spacing-lg;
+  border-radius: $border-radius-lg;
+  color: darken($text-light, 10%);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  flex: 1;
+  min-width: 200px;
+  box-shadow: $base-shadow;
+  border-right: 3px solid $color-primary;
+
+  i {
+    font-size: 1.5rem;
+    color: $color-primary;
+    width: 40px;
+    height: 40px;
+    @include flex-center;
+    background-color: color-light($color-primary, 0.1);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+  }
+
+  span {
+    font-weight: 500;
+    font-size: 1.05rem;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $card-shadow;
+    background-color: color-light($color-primary, 0.05);
+    color: $color-primary;
+
+    i {
+      background-color: $color-primary;
+      color: $color-white;
+    }
+  }
+}
+
+// Notification Components
+#system-notifications {
+  @extend %section-base;
+  margin-bottom: $spacing-3xl;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.notification {
+  @extend %card-base;
+  margin-top: $spacing-lg;
+  margin-bottom: $spacing-lg;
+
+  .notification-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: darken($text-light, 15%);
+    margin-bottom: $spacing-xs;
+
+    .admin-name {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: $text-light;
+    }
+
+    .time {
+      font-size: 0.85rem;
+    }
+  }
+
+  .notification-message {
+    font-size: 1rem;
+    color: $text-light;
+    line-height: 1.5;
+
+    a {
+      color: $color-primary;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s, text-decoration 0.2s;
+
+      &:hover {
+        text-decoration: underline;
+        color: color-dark($color-primary);
+      }
+    }
+  }
+}
+
+// Empty State
+.empty-state {
+  margin-top: $spacing-lg;
+  text-align: center;
+  background-color: rgba($bg-light, 0.3);
+  border: 1px dashed darken($bg-light, 20%);
+  padding: $spacing-lg;
+  border-radius: $border-radius-lg;
+
+  i {
+    color: darken($bg-light, 40%);
+    font-size: 1.8rem;
+    margin-bottom: $spacing-sm;
+  }
+
+  p {
+    color: darken($text-light, 15%);
+    font-size: 1.1rem;
+  }
+}
+
+// Content Sections
+.info-section,
+#search-section,
+#group-section,
+#manage-notifications,
+#notification-section {
+  @extend %section-base;
+}
+
+// Search Results
+#search-result {
+  margin-top: $spacing-lg;
+  min-height: 80px;
+  padding: $spacing-md;
+  border-radius: $border-radius-lg;
+  @include transition(all);
+
+  .loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: $spacing-lg;
+    color: darken($text-light, 15%);
+
+    i {
+      font-size: 1.5rem;
+      margin-bottom: $spacing-sm;
+      animation: loading 1.2s linear infinite;
+      color: $color-primary;
+    }
+
+    span {
+      font-size: 1rem;
+    }
+  }
+
+  .result-error {
+    background-color: color-light($color-danger, 0.1);
+    border-right: 4px solid $color-danger;
+    padding: $spacing-md $spacing-lg;
+    border-radius: $border-radius-md;
+    display: flex;
+    align-items: center;
+    color: $color-danger;
+
+    i {
+      font-size: 1.2rem;
+      margin-left: $spacing-sm;
+    }
+  }
+
+  .result-container {
+    background-color: $container-light;
+    border-right: 4px solid $color-primary;
+    border-radius: $border-radius-lg;
+    padding: $spacing-lg;
+    box-shadow: $base-shadow;
+    animation: fadeIn 0.3s ease;
+
+    h3 {
+      margin-bottom: $spacing-md;
+      color: $text-light;
+      font-size: 1.2rem;
+      border-bottom: 1px solid darken($bg-light, 10%);
+      padding-bottom: $spacing-xs;
+    }
+
+    p {
+      margin-bottom: $spacing-sm;
+      line-height: 1.5;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      strong {
+        font-weight: 600;
+        color: darken($text-light, 10%);
+        margin-left: $spacing-xs;
+      }
+    }
+  }
+}
+
+#search-form {
+  button[type="submit"] {
+    margin-top: $spacing-md;
+    width: 100%;
+  }
+}
+
+// RTL Support
+html[dir="rtl"] {
+  .help-card,
+  .notification,
+  .result-container,
+  .result-error {
+    border-right: 4px solid $color-primary;
+  }
+
+  .notification-header {
+    .time {
+      text-align: left;
+    }
+  }
+
+  .contact-link {
+    border-right: 3px solid $color-primary;
+    border-left: 0;
+  }
+
+  .info-section,
+  #search-section,
+  #group-section,
+  #manage-notifications,
+  #notification-section,
+  #system-notifications {
+    h2::after {
+      right: auto;
+      left: 0;
+    }
+
+    h2 i {
+      margin-left: 0;
+      margin-right: $spacing-xs;
+    }
+  }
+
+  .result-error i {
+    margin-left: 0;
+    margin-right: $spacing-sm;
+  }
+
+  .result-container p strong {
+    margin-left: 0;
+    margin-right: $spacing-xs;
+  }
+}
+
+// Responsive Layouts
+@include mobile {
+  .contact-info {
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,421 @@
+@use "../core/variables" as *;
+@use "../core/mixins" as *;
+
+// Table Container
+.results-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: $spacing-md;
+  padding-bottom: 5px;
+
+  @media (max-width: 767px) {
+    overflow-x: visible;
+    padding-bottom: 0;
+  }
+}
+
+// Results Table
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  table-layout: fixed;
+  min-width: 650px;
+
+  // Table Headers and Cells
+  th,
+  td {
+    padding: 0.5rem;
+    text-align: right;
+    border-bottom: 1px solid darken($bg-light, 15%);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  th {
+    font-weight: 600;
+    color: $text-light;
+    background-color: $bg-light;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+
+  // Column Widths
+  .subject-code {
+    width: 12%;
+  }
+  .subject-name {
+    width: 30%;
+    white-space: normal;
+  }
+  .credit-hours {
+    width: 10%;
+  }
+  .grade {
+    width: 10%;
+  }
+  .grade-letter {
+    width: 10%;
+  }
+  .status {
+    width: 12%;
+  }
+
+  // Row States
+  > tbody > tr {
+    &.passed {
+      background-color: color-light($color-success, 0.1);
+
+      > td {
+        color: $color-success;
+      }
+    }
+
+    &.failed {
+      background-color: color-light($color-danger, 0.1);
+
+      > td {
+        color: $color-danger;
+      }
+    }
+  }
+
+  @media (max-width: 767px) {
+    display: block;
+    min-width: auto;
+    border-collapse: separate;
+    border-spacing: 0 $spacing-md;
+
+    thead {
+      display: none;
+    }
+
+    tbody {
+      display: block;
+      width: 100%;
+    }
+
+    tr {
+      display: block;
+      width: 100%;
+      margin-bottom: $spacing-md;
+      background-color: $container-light;
+      border-radius: $border-radius-lg;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      border: 1px solid darken($bg-light, 10%);
+      padding: $spacing-sm;
+
+      &:last-child {
+        margin-bottom: 0;
+        border: 1px solid darken($bg-light, 10%);
+      }
+    }
+
+    td {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: $spacing-sm $spacing-md;
+      text-align: right;
+      border-bottom: 1px solid darken($bg-light, 10%);
+      white-space: normal;
+      font-size: 0.9rem;
+
+      &:before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: darken($text-light, 15%);
+        font-size: 0.85rem;
+      }
+    }
+
+    > tbody > tr {
+      &.passed {
+        background-color: color-light($color-success, 0.1);
+        border: 1px solid color-light($color-success, 0.2);
+
+        td {
+          color: $color-success;
+          border-color: rgba(0, 0, 0, 0.05);
+
+          &:before {
+            color: $text-light;
+            opacity: 0.8;
+          }
+        }
+
+        &:last-child {
+          border: 1px solid color-light($color-success, 0.2);
+        }
+      }
+
+      &.failed {
+        background-color: color-light($color-danger, 0.1);
+        border: 1px solid color-light($color-danger, 0.2);
+
+        td {
+          color: $color-danger;
+          border-color: rgba(0, 0, 0, 0.05);
+
+          &:before {
+            color: $text-light;
+            opacity: 0.8;
+          }
+        }
+
+        &:last-child {
+          border: 1px solid color-light($color-danger, 0.2);
+        }
+      }
+    }
+
+    .subject-code,
+    .subject-name,
+    .credit-hours,
+    .grade,
+    .grade-letter,
+    .status {
+      width: 100%;
+    }
+  }
+}
+
+// GPA Value Display
+.gpa-value {
+  font-weight: 600;
+
+  &.good {
+    color: $color-success;
+  }
+  &.warning {
+    color: $color-warning;
+  }
+  &.danger {
+    color: $color-danger;
+  }
+}
+
+// Semester Container
+.semester-container {
+  margin-bottom: $spacing-xl;
+  border: 1px solid darken($bg-light, 10%);
+  border-radius: $border-radius-lg;
+  overflow: hidden;
+
+  // Semester Header
+  .semester-header {
+    background-color: $bg-light;
+    padding: $spacing-md;
+    border-bottom: 1px solid darken($bg-light, 10%);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: $spacing-sm;
+
+    h3 {
+      margin: 0;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    @media (max-width: 767px) {
+      padding: $spacing-sm;
+
+      h3 {
+        font-size: 1.1rem;
+        width: 100%;
+      }
+    }
+  }
+
+  // Semester GPA Display
+  .semester-gpa-container {
+    display: flex;
+    align-items: center;
+    padding: $spacing-xs $spacing-md;
+    border-radius: $border-radius-pill;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin: $spacing-xs 0;
+
+    .semester-gpa-label {
+      margin-left: $spacing-sm;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .semester-gpa-value {
+      font-weight: 700;
+      font-size: 1.1rem;
+      padding: $spacing-xs $spacing-sm;
+      border-radius: $border-radius-sm;
+      min-width: 40px;
+      text-align: center;
+
+      &.good {
+        color: color-dark($color-success);
+      }
+      &.warning {
+        color: color-dark($color-warning);
+      }
+      &.danger {
+        color: $color-danger;
+      }
+    }
+  }
+}
+
+// RTL Support
+html[dir="rtl"] {
+  .results-table {
+    th,
+    td {
+      text-align: right;
+    }
+  }
+
+  .semester-gpa-container {
+    .semester-gpa-label {
+      margin-left: 0;
+      margin-right: $spacing-sm;
+    }
+  }
+}
+
+// Mobile Responsive
+@include mobile {
+  .results-table-wrapper {
+    overflow-x: visible;
+    padding-bottom: 0;
+  }
+
+  .results-table {
+    display: block;
+    min-width: auto;
+    border-collapse: separate;
+    border-spacing: 0 $spacing-md;
+
+    thead {
+      display: none;
+    }
+
+    tbody {
+      display: block;
+      width: 100%;
+    }
+
+    tr {
+      display: block;
+      width: 100%;
+      margin-bottom: $spacing-md;
+      background-color: $container-light;
+      border-radius: $border-radius-lg;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      border: 1px solid darken($bg-light, 10%);
+
+      &:last-child {
+        margin-bottom: 0;
+        border: 1px solid darken($bg-light, 10%);
+      }
+    }
+
+    td {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: $spacing-sm $spacing-md;
+      text-align: right;
+      border-bottom: 1px solid darken($bg-light, 10%);
+      white-space: normal;
+      font-size: 0.9rem;
+
+      &:before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: darken($text-light, 15%);
+        font-size: 0.85rem;
+      }
+    }
+
+    > tbody > tr {
+      &.passed {
+        background-color: color-light($color-success, 0.1);
+        border: 1px solid color-light($color-success, 0.2);
+
+        td {
+          color: $color-success;
+          border-color: rgba(0, 0, 0, 0.05);
+
+          &:before {
+            color: $text-light;
+            opacity: 0.8;
+          }
+        }
+
+        &:last-child {
+          border: 1px solid color-light($color-success, 0.2);
+        }
+      }
+
+      &.failed {
+        background-color: color-light($color-danger, 0.1);
+        border: 1px solid color-light($color-danger, 0.2);
+
+        td {
+          color: $color-danger;
+          border-color: rgba(0, 0, 0, 0.05);
+
+          &:before {
+            color: $text-light;
+            opacity: 0.8;
+          }
+        }
+
+        &:last-child {
+          border: 1px solid color-light($color-danger, 0.2);
+        }
+      }
+    }
+
+    .subject-code,
+    .subject-name,
+    .credit-hours,
+    .grade,
+    .grade-letter,
+    .status {
+      width: 100%;
+    }
+  }
+
+  .semester-container {
+    .semester-header {
+      padding: $spacing-sm;
+
+      h3 {
+        font-size: 1.1rem;
+        width: 100%;
+      }
+    }
+
+    .semester-gpa-container {
+      margin-right: auto;
+      padding: $spacing-xs;
+
+      .semester-gpa-label {
+        font-size: 0.85rem;
+      }
+
+      .semester-gpa-value {
+        font-size: 1rem;
+        padding: $spacing-xs;
+      }
+    }
+  }
+}

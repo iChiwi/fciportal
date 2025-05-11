@@ -1,0 +1,133 @@
+@use "../core/variables" as *;
+@use "../core/mixins" as *;
+
+// Import fonts
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap");
+
+// Base HTML and Body styles
+html {
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: $bg-light;
+  color: $text-light;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+// Layout container
+main {
+  flex: 1;
+  padding: $spacing-2xl 0;
+  width: 100%;
+}
+
+.container {
+  margin: 0 auto;
+  max-width: 1500px;
+  padding: 0 $spacing-xl;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+// Section styles
+section {
+  margin-bottom: $spacing-3xl;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  h2 {
+    color: darken($text-light, 5%);
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: $spacing-xl;
+    position: relative;
+    padding-bottom: $spacing-sm;
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+
+    i {
+      color: $color-primary;
+      font-size: 1.5rem;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 60px;
+      height: 4px;
+      background: $gradient-primary;
+      border-radius: $border-radius-pill;
+    }
+  }
+}
+
+// RTL Support
+html[dir="rtl"] {
+  section {
+    h2 {
+      &::after {
+        right: auto;
+        left: 0;
+      }
+
+      i {
+        margin-left: $spacing-xs;
+      }
+    }
+  }
+}
+
+// Responsive Adjustments
+@media (max-width: 768px) {
+  main {
+    padding: $spacing-xl 0;
+  }
+
+  .container {
+    padding: 0 $spacing-lg;
+  }
+
+  section h2 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  main {
+    padding: $spacing-lg 0;
+  }
+
+  .container {
+    padding: 0 $spacing-md;
+  }
+
+  section {
+    margin-bottom: $spacing-2xl;
+  }
+
+  section h2 {
+    font-size: 1.35rem;
+  }
+}

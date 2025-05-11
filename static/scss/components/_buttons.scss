@@ -1,0 +1,104 @@
+@use "../core/variables" as *;
+@use "../core/mixins" as *;
+
+button,
+.btn,
+.button {
+  background-color: $color-primary;
+  color: $color-white;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.75rem 1.25rem;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  border: none;
+  border-radius: $border-radius-md;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  white-space: nowrap;
+  transition: background-color 0.2s, transform 0.2s;
+
+  i {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &:hover,
+  &:focus {
+    background-color: darken($color-primary, 5%);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px color-light($color-primary, 0.4);
+  }
+
+  &:active {
+    transform: translateY(1px);
+    background-color: darken($color-primary, 10%);
+  }
+
+  &:disabled,
+  &.disabled {
+    opacity: 0.65;
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+}
+
+.btn-secondary {
+  background-color: darken($bg-light, 5%);
+  color: darken($text-light, 5%);
+
+  &:hover,
+  &:focus {
+    background-color: darken($bg-light, 10%);
+    color: $color-primary;
+  }
+
+  &:active {
+    background-color: darken($bg-light, 15%);
+  }
+}
+
+.btn-danger {
+  background-color: $color-danger;
+
+  &:hover,
+  &:focus {
+    background-color: darken($color-danger, 5%);
+  }
+
+  &:active {
+    background-color: darken($color-danger, 10%);
+  }
+}
+
+.nav-button {
+  border-radius: 4px;
+  color: darken($text-light, 10%);
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: all 0.2s;
+
+  &:hover {
+    color: $color-primary;
+    background-color: color-light($color-primary, 0.05);
+  }
+
+  &.active {
+    color: $color-primary;
+    font-weight: 600;
+  }
+}

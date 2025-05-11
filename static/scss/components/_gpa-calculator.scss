@@ -1,0 +1,221 @@
+@use "../core/variables" as *;
+@use "../core/mixins" as *;
+
+// GPA Calculator Component
+.gpa-calculator {
+  width: 100%;
+
+  // Semester Container
+  .semester-container {
+    margin-bottom: $spacing-lg;
+    border: 1px solid darken($bg-light, 15%);
+    border-radius: $border-radius-md;
+    padding: $spacing-md;
+    background-color: $container-light;
+  }
+
+  // Semester Header
+  .semester-header {
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $spacing-md;
+
+    h3 {
+      margin: 0;
+      color: $text-light;
+    }
+  }
+
+  // Subject Table
+  .subject-list {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: $spacing-md;
+
+    th,
+    td {
+      padding: $spacing-sm;
+      text-align: right;
+      border-bottom: 1px solid darken($bg-light, 15%);
+    }
+
+    th {
+      font-weight: 600;
+      color: $text-light;
+      background-color: $bg-light;
+    }
+
+    // Table Column Widths
+    .subject-name {
+      width: 35%;
+    }
+    .credit-hours {
+      width: 15%;
+    }
+    .prerequisites {
+      width: 20%;
+    }
+    .recommend {
+      width: 10%;
+    }
+    .grade {
+      width: 20%;
+    }
+
+    // Form Controls
+    select,
+    input {
+      width: 100%;
+      padding: calc($spacing-xs / 2) $spacing-sm;
+      border-radius: $border-radius-sm;
+      border: 1px solid darken($bg-light, 15%);
+      background-color: $bg-light;
+      color: $text-light;
+    }
+  }
+
+  // Subject States
+  .subject-locked {
+    background-color: color-light($color-danger, 0.1);
+
+    td {
+      color: $color-danger;
+    }
+  }
+
+  .subject-recommended {
+    background-color: color-light($color-primary, 0.1);
+
+    td {
+      color: color-dark($color-primary);
+    }
+  }
+
+  .subject-passed {
+    background-color: color-light($color-success, 0.1);
+
+    td {
+      color: color-dark($color-success);
+    }
+  }
+
+  // GPA Results
+  .gpa-results {
+    background-color: $container-light;
+    padding: $spacing-md;
+    border-radius: $border-radius-md;
+    margin-bottom: $spacing-lg;
+    border: 1px solid darken($bg-light, 15%);
+
+    .gpa-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: $spacing-sm;
+      padding-bottom: $spacing-sm;
+      border-bottom: 1px solid darken($bg-light, 15%);
+
+      &:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+      }
+
+      .gpa-label {
+        font-weight: 600;
+      }
+
+      .gpa-value {
+        font-weight: 600;
+
+        &.good {
+          color: $color-success;
+        }
+
+        &.warning {
+          color: $color-warning;
+        }
+
+        &.danger {
+          color: $color-danger;
+        }
+      }
+    }
+  }
+
+  // Information Message
+  .gpa-info {
+    margin-bottom: $spacing-lg;
+    padding: $spacing-md;
+    border-radius: $border-radius-md;
+    background-color: color-light($color-primary, 0.1);
+    border: 1px solid $color-primary;
+
+    p {
+      margin: 0;
+      color: color-dark($color-primary);
+    }
+  }
+
+  // Controls
+  .calculator-controls {
+    display: flex;
+    justify-content: space-between;
+    margin-top: $spacing-md;
+
+    .control-group {
+      display: flex;
+      gap: $spacing-sm;
+    }
+  }
+}
+
+// RTL Support
+html[dir="rtl"] {
+  .gpa-calculator {
+    .subject-list {
+      th,
+      td {
+        text-align: right;
+      }
+    }
+  }
+}
+
+// Mobile Responsive
+@include mobile {
+  .gpa-calculator {
+    .calculator-controls {
+      flex-direction: column;
+      gap: $spacing-md;
+
+      .control-group {
+        justify-content: center;
+      }
+    }
+
+    .subject-list {
+      th,
+      td {
+        padding: calc($spacing-xs / 2);
+        font-size: 0.9rem;
+      }
+
+      .prerequisites {
+        display: none;
+      }
+
+      .subject-name {
+        width: 45%;
+      }
+      .credit-hours {
+        width: 15%;
+      }
+      .recommend {
+        width: 10%;
+      }
+      .grade {
+        width: 30%;
+      }
+    }
+  }
+}

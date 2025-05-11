@@ -1,0 +1,92 @@
+// Color Schemes
+// --------------------------------------
+
+// Primary Colors
+$color-primary: #3b82f6; // Blue
+$color-secondary: #8b5cf6; // Purple
+$color-success: #10b981; // Green
+$color-danger: #ef4444; // Red
+$color-warning: #f59e0b; // Orange
+
+// Neutral Colors
+$color-white: #ffffff;
+$color-black: #0f172a;
+
+// Dark & Light Theme Base Colors
+$bg-dark: #121418;
+$bg-light: #f8fafc;
+$container-dark: #1a1d24;
+$container-light: $color-white;
+
+// Text Colors
+$text-dark: #e9ecef;
+$text-light: #1e293b;
+
+// Functions to generate color variations
+@function color-light($color, $opacity: 0.15) {
+  @return rgba($color, $opacity);
+}
+
+@function color-dark($color) {
+  @return mix($color, $color-white, 85%);
+}
+
+// Design System
+// --------------------------------------
+
+// Overlays
+$overlay-light: rgba($color-white, 0.05);
+$overlay-dark: rgba($color-black, 0.05);
+
+// Gradients
+$gradient-primary: linear-gradient(135deg, $color-primary, $color-secondary);
+$gradient-light: linear-gradient(135deg, $bg-light, darken($bg-light, 5%));
+$gradient-dark: linear-gradient(135deg, $bg-dark, darken($bg-dark, 3%));
+
+// Shadows and Effects
+// --------------------------------------
+$base-shadow: 0 1px 3px rgba($color-black, 0.1),
+  0 1px 2px rgba($color-black, 0.06);
+$card-shadow: 0 10px 15px -3px rgba($color-black, 0.1),
+  0 4px 6px -2px rgba($color-black, 0.05);
+$button-shadow: 0 4px 6px rgba($color-primary, 0.25);
+$dark-shadow: 0 4px 8px rgba($color-black, 0.3),
+  0 2px 4px rgba($color-black, 0.25);
+
+// Border Radius
+// --------------------------------------
+$border-radius-sm: 4px;
+$border-radius-md: 8px;
+$border-radius-lg: 16px;
+$border-radius-pill: 9999px;
+
+// Spacing
+// --------------------------------------
+$spacing-xs: 0.25rem;
+$spacing-sm: 0.5rem;
+$spacing-md: 1rem;
+$spacing-lg: 1.5rem;
+$spacing-xl: 2rem;
+$spacing-2xl: 3rem;
+$spacing-3xl: 4rem;
+
+// Transitions
+// --------------------------------------
+$transition-fast: 0.15s ease-in-out;
+$transition-normal: 0.3s ease-in-out;
+$transition-slow: 0.5s ease-in-out;
+
+// Z-index layers
+// --------------------------------------
+$z-index-dropdown: 1000;
+$z-index-sticky: 1020;
+$z-index-fixed: 1030;
+$z-index-modal: 1050;
+
+// Breakpoints
+// --------------------------------------
+$breakpoint-xs: 480px;
+$breakpoint-sm: 640px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1280px;

@@ -1,0 +1,206 @@
+@use "../core/variables" as *;
+@use "../core/mixins" as *;
+
+// Base form styles
+form {
+  width: 100%;
+  margin: $spacing-md 0;
+
+  &.standard-form {
+    max-width: 500px;
+  }
+}
+
+// Form group and layout
+.form-group {
+  margin-bottom: $spacing-md;
+  width: 100%;
+}
+
+.form-actions {
+  display: flex;
+  gap: $spacing-md;
+  margin-top: $spacing-lg;
+
+  .btn {
+    min-width: 120px;
+  }
+}
+
+// Labels
+label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: $spacing-xs;
+  color: darken($text-light, 10%);
+}
+
+// Input fields
+%input-base {
+  background-color: $bg-light;
+  border: 1px solid darken($bg-light, 15%);
+  border-radius: $border-radius-md;
+  color: $text-light;
+  display: block;
+  font-size: 1rem;
+  padding: $spacing-md;
+  width: 100%;
+  @include transition(all);
+
+  &:focus {
+    border-color: $color-primary;
+    box-shadow: 0 0 0 2px color-light($color-primary, 0.2);
+    outline: none;
+  }
+
+  &:disabled {
+    background-color: darken($bg-light, 5%);
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+
+  &.valid {
+    border-color: $color-success;
+  }
+
+  &.error {
+    border-color: $color-danger;
+  }
+}
+
+input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+select,
+textarea {
+  @extend %input-base;
+}
+
+// Special input types
+input[type="text"].credentials,
+input[type="password"] {
+  direction: ltr;
+  text-align: left;
+  letter-spacing: 0.05em;
+}
+
+// Select dropdown styling
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236E6E6E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.7em top 50%;
+  background-size: 1em;
+  padding-right: 2.5em;
+}
+
+// File input styling
+.file-input-container {
+  margin: $spacing-md 0;
+  width: 100%;
+
+  label {
+    background-color: $color-primary;
+    border-radius: $border-radius-md;
+    color: $color-white;
+    cursor: pointer;
+    display: block;
+    padding: $spacing-md $spacing-lg;
+    text-align: center;
+    @include transition(all);
+
+    &:hover {
+      background-color: darken($color-primary, 5%);
+    }
+  }
+
+  input[type="file"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+  }
+}
+
+// Status messages
+
+.error-message,
+.result-error,
+.success-message {
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.success-message {
+  background-color: color-light($color-success, 0.1);
+  border-right: 4px solid $color-success;
+  color: $color-success;
+}
+
+.error-message,
+.result-error {
+  background-color: color-light($color-danger, 0.1);
+  border-right: 4px solid $color-danger;
+  color: $color-danger;
+
+  i {
+    margin-left: $spacing-xs;
+  }
+}
+
+// Specific forms
+#search-form {
+  margin-top: $spacing-lg;
+  max-width: 500px;
+}
+
+#search-result {
+  max-width: 500px;
+  margin-top: $spacing-lg;
+}
+
+// RTL support
+html[dir="rtl"] {
+  select option,
+  textarea,
+  select {
+    text-align: right;
+    direction: rtl;
+  }
+
+  select {
+    background-position: left 0.7em top 50%;
+    padding-right: $spacing-md;
+    padding-left: 2.5em;
+  }
+
+  .success-message,
+  .error-message,
+  .result-error {
+    border-right: 0;
+    border-left: 4px solid;
+  }
+
+  .error-message i,
+  .result-error i {
+    margin-left: 0;
+    margin-right: $spacing-xs;
+  }
+
+  .form-actions {
+    flex-direction: row-reverse;
+  }
+}
+
+// Mobile responsiveness
+@include mobile {
+  .form-actions {
+    flex-direction: column;
+  }
+
+  html[dir="rtl"] .form-actions {
+    flex-direction: column;
+  }
+}

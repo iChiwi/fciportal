@@ -1,0 +1,246 @@
+@use "../core/variables" as *;
+@use "../core/mixins" as *;
+
+// Header Styles
+header {
+  background: $gradient-primary;
+  color: $color-white;
+  margin-top: 50px;
+  padding: $spacing-3xl $spacing-xl;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.05;
+    z-index: 1;
+    background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm-23-31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm-27 22c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm27 0c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm-40-19c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3z' fill='%23ffffff' fill-opacity='1' fill-rule='evenodd'/%3E%3C/svg%3E");
+  }
+}
+
+// Header Content
+.header-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  margin: 0 auto;
+
+  h1 {
+    font-size: 3rem;
+    margin: 0;
+    font-weight: 800;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    letter-spacing: -0.5px;
+    animation: fadeInUp 0.8s ease-out;
+  }
+
+  p {
+    font-size: 1.25rem;
+    margin-top: $spacing-md;
+    opacity: 0.9;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+    animation: fadeInUp 0.8s ease-out 0.2s both;
+  }
+}
+
+// Navigation Base
+%nav-base {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: $z-index-sticky;
+  box-shadow: $base-shadow;
+  @include transition(all);
+}
+
+// Navigation Container
+.nav-container {
+  @extend %nav-base;
+  background-color: rgba($container-light, 0.95);
+  backdrop-filter: blur(8px);
+  min-height: 70px;
+  transition: transform 0.3s ease, min-height 0.3s ease, box-shadow 0.3s ease;
+
+  &:not(.scrolled) {
+    animation: navExpand 0.3s forwards;
+  }
+}
+
+.nav-content {
+  align-items: center;
+  display: flex;
+  height: 70px;
+  justify-content: space-between;
+  margin: 0 auto;
+  max-width: 1500px;
+  padding: 0 $spacing-xl;
+  position: relative;
+  @include transition(height);
+}
+
+// Navigation Links
+.nav-links {
+  display: flex;
+  justify-content: flex-end;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: $spacing-md;
+  order: 2;
+
+  a.nav-button {
+    padding: $spacing-sm $spacing-md;
+    color: darken($text-light, 10%);
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: $border-radius-md;
+    @include transition(all);
+    position: relative;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    z-index: 1;
+
+    i {
+      font-size: 1.1rem;
+      transition: transform 0.3s ease;
+    }
+
+    &:hover {
+      color: $color-primary;
+      background-color: transparent;
+
+      i {
+        transform: translateY(-3px) scale(1.2);
+      }
+
+      &::before {
+        transform: scaleX(1);
+        opacity: 1;
+      }
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        to top,
+        color-light($color-primary, 0.15),
+        transparent 70%
+      );
+      transform: scaleX(0.3);
+      transform-origin: bottom;
+      opacity: 0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      z-index: -1;
+      border-radius: $border-radius-md;
+    }
+
+    &.active {
+      color: $color-primary;
+      font-weight: 600;
+
+      &::before {
+        transform: scaleX(1);
+        opacity: 0.8;
+      }
+    }
+  }
+}
+
+// Mobile Menu Toggle
+.hamburger {
+  cursor: pointer;
+  height: 24px;
+  width: 32px;
+  position: relative;
+  display: none;
+  background: transparent;
+  border: none;
+  padding: 0;
+  order: 4;
+
+  span {
+    background-color: darken($text-light, 10%);
+    border-radius: $border-radius-pill;
+    display: block;
+    height: 3px;
+    width: 100%;
+    transition: all 0.3s ease-in-out;
+
+    &:nth-child(1) {
+      transform-origin: 0% 0%;
+    }
+
+    &:nth-child(2) {
+      opacity: 1;
+    }
+
+    &:nth-child(3) {
+      transform-origin: 0% 100%;
+    }
+  }
+}
+
+// Animation
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Add new nav animations
+@keyframes navShrink {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes navExpand {
+  from {
+    transform: translateY(-5px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@include mobile {
+  .nav-container {
+    .nav-content,
+    & {
+      padding: 0 $spacing-md;
+    }
+  }
+
+  .hamburger {
+    display: block;
+  }
+
+  .nav-links {
+    display: none;
+  }
+}

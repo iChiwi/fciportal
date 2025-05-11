@@ -1,0 +1,133 @@
+@use "../core/variables" as *;
+@use "../core/mixins" as *;
+
+// Links Component
+.group-links {
+  margin: $spacing-lg 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  // Group Selector
+  .group-select {
+    margin-bottom: $spacing-md;
+    width: 100%;
+    min-height: 48px;
+    max-width: 500px;
+
+    // Add spacing when multiple selects are stacked
+    & + .group-select {
+      margin-top: $spacing-md;
+    }
+  }
+
+  // Links Container
+  #links-container {
+    margin-top: $spacing-xl;
+    width: 100%;
+
+    h3 {
+      margin-bottom: $spacing-md;
+      font-size: 1.2rem;
+      color: $text-light;
+      padding-bottom: $spacing-xs;
+      border-bottom: 1px solid darken($bg-light, 10%);
+    }
+
+    // Links Grid Layout
+    .links-grid {
+      display: grid;
+      gap: $spacing-md;
+      grid-template-columns: 1fr;
+
+      @media (min-width: $breakpoint-md) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      @media (min-width: $breakpoint-lg) {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    // Link Card Component
+    .link-card {
+      background-color: $container-light;
+      border-radius: $border-radius-lg;
+      box-shadow: $base-shadow;
+      color: $text-light;
+      display: flex;
+      align-items: center;
+      gap: $spacing-sm;
+      padding: $spacing-md $spacing-lg;
+      text-decoration: none;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      border-right: 3px solid transparent;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: $card-shadow;
+        color: $color-primary;
+        border-right-color: $color-primary;
+      }
+
+      i {
+        font-size: 1.5rem;
+        color: $color-primary;
+        width: 32px;
+        display: flex;
+        justify-content: center;
+      }
+
+      span {
+        font-weight: 500;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+}
+
+// RTL Support
+html[dir="rtl"] {
+  .group-links {
+    .group-select {
+      padding-left: 2.5em;
+      direction: rtl;
+      text-align: right;
+
+      option {
+        direction: rtl;
+        text-align: right;
+        unicode-bidi: embed;
+      }
+    }
+
+    #links-container {
+      .link-card {
+        flex-direction: row-reverse;
+        border-right: none;
+        border-right: 3px solid transparent;
+
+        &:hover {
+          border-right-color: $color-primary;
+        }
+      }
+    }
+  }
+}
+
+// Mobile Responsive Adjustments
+@include mobile {
+  .group-links {
+    #links-container {
+      .links-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .link-card {
+        padding: $spacing-sm $spacing-md;
+      }
+    }
+  }
+}

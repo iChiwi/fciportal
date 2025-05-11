@@ -1,0 +1,49 @@
+@use "../core/variables" as *;
+@use "../core/mixins" as *;
+
+// Footer Styles
+.copyright-footer {
+  margin-top: auto;
+  padding: $spacing-md 0;
+  text-align: center;
+  font-size: 0.8rem;
+  color: darken($text-light, 10%);
+  border-top: 1px solid rgba(darken($text-light, 20%), 0.2);
+
+  p {
+    margin: 0;
+    margin-bottom: $spacing-xl;
+    box-sizing: border-box;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+}
+
+// RTL Support
+html[dir="rtl"] {
+  .copyright-footer {
+    direction: rtl;
+  }
+}
+
+// Mobile Responsive
+@include mobile {
+  .copyright-footer {
+    padding: $spacing-sm 0;
+
+    p {
+      margin-bottom: $spacing-lg;
+    }
+  }
+}
+
+// Animations
+@keyframes heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}

@@ -1,0 +1,522 @@
+@use "../core/variables" as *;
+@use "../core/mixins" as *;
+
+// Admin Table Styles
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: $spacing-md;
+  table-layout: fixed;
+
+  th {
+    background-color: $bg-light;
+    color: $text-light;
+    font-weight: 600;
+    padding: $spacing-md;
+    text-align: right;
+    border-bottom: 2px solid darken($bg-light, 15%);
+  }
+
+  td {
+    padding: $spacing-md;
+    border-bottom: 1px solid darken($bg-light, 5%);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    max-width: 0;
+  }
+
+  th:first-child,
+  td:first-child {
+    width: 60%;
+  }
+
+  th:nth-child(2),
+  td:nth-child(2) {
+    width: 20%;
+  }
+
+  th:last-child,
+  td:last-child {
+    width: 20%;
+  }
+
+  tr:hover {
+    background-color: color-light($color-primary, 0.03);
+  }
+
+  .delete-btn {
+    background-color: $color-danger;
+    color: $color-white;
+    font-size: 0.9rem;
+    padding: $spacing-xs $spacing-md;
+    min-width: 80px;
+    border: none;
+    border-radius: $border-radius-md;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: darken($color-danger, 10%);
+    }
+  }
+}
+
+// Form Styles
+.form-actions {
+  display: flex;
+  gap: $spacing-sm;
+  margin-top: 1rem;
+
+  .btn {
+    min-width: 120px;
+    padding: $spacing-sm $spacing-md;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-xs;
+
+    i {
+      margin: 0;
+    }
+  }
+}
+
+// Common form styles
+%admin-form-base {
+  background-color: $bg-light;
+  border-radius: $border-radius-md;
+  padding: 1.25rem;
+  margin-top: 1.25rem;
+
+  h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    font-size: 1.25rem;
+
+    i {
+      margin-left: 0.75rem;
+      color: $color-primary;
+    }
+  }
+
+  input[type="text"],
+  input[type="number"] {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid darken($bg-light, 15%);
+    border-radius: $border-radius-md;
+    font-size: 1rem;
+
+    &:focus {
+      border-color: $color-primary;
+      outline: none;
+      box-shadow: 0 0 0 3px color-light($color-primary, 0.15);
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+
+    .btn {
+      min-width: 120px;
+    }
+  }
+}
+
+.notification-form {
+  max-width: 100%;
+  margin-top: $spacing-md;
+
+  textarea {
+    width: 100%;
+    max-width: 500px;
+    padding: $spacing-md;
+    min-height: 100px;
+    margin-bottom: $spacing-md;
+  }
+
+  button {
+    max-width: 200px;
+  }
+}
+
+// New folder and upload forms
+#new-folder-form,
+#inline-upload-form {
+  @extend %admin-form-base;
+
+  // Dark mode styles
+  background-color: $bg-dark;
+
+  input[type="text"],
+  input[type="number"] {
+    background-color: darken($bg-dark, 5%);
+    border-color: darken($bg-dark, 10%);
+    color: lighten($text-dark, 15%);
+
+    &:focus {
+      border-color: $color-primary;
+    }
+  }
+
+  label {
+    color: lighten($text-dark, 10%);
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+// Upload form specific styles
+#inline-upload-form {
+  .file-input-container {
+    position: relative;
+    margin-bottom: 1rem;
+
+    label {
+      display: block;
+      padding: 0.75rem 1rem;
+      border: 1px dashed darken($bg-dark, 10%);
+      border-radius: $border-radius-md;
+      background-color: $bg-dark;
+      color: lighten($text-dark, 10%);
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+
+      &:hover {
+        border-color: $color-primary;
+        color: $color-primary;
+      }
+    }
+  }
+}
+
+// File browser component
+#file-browser {
+  margin-top: $spacing-md;
+  border: 1px solid darken($bg-light, 15%);
+  border-radius: $border-radius-md;
+  overflow: hidden;
+
+  .browser-header {
+    padding: 1rem;
+    border-bottom: 1px solid darken($bg-light, 5%);
+    background-color: $container-light;
+
+    .breadcrumb {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      padding: 0.5rem;
+      margin-bottom: 0;
+      background: transparent;
+      border-radius: 0;
+      border: none;
+      box-shadow: none;
+
+      .breadcrumb-item {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.5rem 0.75rem;
+        background-color: darken($bg-light, 5%);
+        color: darken($text-light, 10%);
+        font-weight: 500;
+        border-radius: $border-radius-sm;
+        margin: 0.25rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        line-height: 1;
+
+        i {
+          margin-left: 0.5rem;
+        }
+
+        &:hover {
+          background-color: $color-primary;
+          color: $color-white;
+          transform: translateY(-1px);
+        }
+
+        &.active {
+          background-color: $color-primary;
+          color: $color-white;
+          pointer-events: none;
+        }
+
+        &.root {
+          background-color: darken($bg-light, 15%);
+
+          &:hover {
+            background-color: $color-primary;
+          }
+        }
+      }
+
+      .breadcrumb-separator {
+        color: darken($text-light, 20%);
+        margin: 0 0.25rem;
+        user-select: none;
+      }
+    }
+  }
+
+  #files-container {
+    padding: $spacing-md;
+    background-color: $container-light;
+    min-height: 200px;
+
+    .loading-spinner {
+      display: flex;
+      justify-content: center;
+      padding: $spacing-lg;
+      color: $color-primary;
+    }
+
+    // List view styles
+    .file-list-view {
+      border: 1px solid darken($bg-light, 5%);
+      border-radius: $border-radius-md;
+      overflow: hidden;
+
+      .file-list-item {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid darken($bg-light, 5%);
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        &.folder-item {
+          background-color: color-light($color-primary, 0.02);
+
+          .file-list-details {
+            cursor: pointer;
+
+            &:hover {
+              .file-list-name {
+                color: $color-primary;
+              }
+            }
+          }
+        }
+
+        .file-list-icon {
+          width: 2.5rem;
+          height: 2.5rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 50%;
+          background-color: color-light(darken($text-light, 20%), 0.1);
+          margin-left: 1rem;
+
+          i {
+            font-size: 1.25rem;
+            color: darken($text-light, 20%);
+          }
+
+          .folder-item & i {
+            color: $color-primary;
+          }
+        }
+
+        .file-list-details {
+          flex: 1;
+
+          .file-list-name {
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+          }
+
+          .order-badge {
+            display: inline-block;
+            background-color: $color-primary;
+            color: $color-white;
+            border-radius: $border-radius-sm;
+            padding: 0.15rem 0.5rem;
+            font-size: 0.75rem;
+            margin-left: 0.5rem;
+          }
+        }
+
+        .file-list-actions {
+          display: flex;
+          gap: 0.5rem;
+          align-items: center;
+
+          .btn {
+            padding: 0.35rem;
+            min-height: auto;
+            width: 2.25rem;
+            height: 2.25rem;
+
+            i {
+              margin: 0;
+            }
+          }
+
+          .download-action {
+            background-color: $color-success;
+
+            &:hover {
+              background-color: darken($color-success, 7%);
+            }
+          }
+
+          .view-action {
+            background-color: $color-primary;
+          }
+        }
+      }
+    }
+  }
+
+  #upload-button {
+    background-color: $color-primary;
+    color: $color-white;
+    border: none;
+
+    &:hover {
+      background-color: darken($color-primary, 10%);
+    }
+  }
+}
+
+// Status and notifications
+#upload-status {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  border-radius: $border-radius-md;
+
+  &.success-message {
+    background-color: color-light($color-success, 0.1);
+    color: darken($color-success, 10%);
+  }
+
+  &.error-message {
+    background-color: color-light($color-danger, 0.1);
+    color: $color-danger;
+  }
+}
+
+.notification-toast {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  right: auto;
+  background-color: $bg-dark;
+  color: $text-dark;
+  padding: 0.75rem 1.25rem;
+  border-radius: $border-radius-md;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(100%);
+  opacity: 0;
+  transition: transform 0.3s, opacity 0.3s;
+  z-index: 1000;
+
+  &.show {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+// Animations
+@keyframes highlight-pulse {
+  0% {
+    background-color: color-light($color-primary, 0.1);
+    border-color: $color-primary;
+  }
+  50% {
+    background-color: color-light($color-primary, 0.2);
+    border-color: $color-primary;
+  }
+  100% {
+    background-color: color-light($color-primary, 0.1);
+    border-color: $color-primary;
+  }
+}
+
+.highlight-animation {
+  animation: highlight-pulse 1.5s ease-in-out;
+}
+
+// RTL (Right-to-Left) Support
+html[dir="rtl"] {
+  // Admin table
+  .admin-table th {
+    text-align: right;
+  }
+
+  .notification-form textarea {
+    direction: rtl;
+    text-align: right;
+  }
+
+  // Status elements
+  .status-overview .status-summary h2 i {
+    margin-right: 0.25rem;
+    margin-left: 0;
+  }
+
+  section h2 {
+    i {
+      margin-right: 0.25rem;
+      margin-left: 0.5rem;
+    }
+
+    &::after {
+      left: 0;
+      right: auto;
+    }
+  }
+
+  // File browser
+  #file-browser {
+    .browser-header .breadcrumb .breadcrumb-separator {
+      margin: 0 0.25rem;
+    }
+
+    #files-container {
+      .file-list-view .file-list-item {
+        .file-list-icon {
+          margin-right: 0;
+          margin-left: 1rem;
+        }
+
+        .file-list-details {
+          .order-badge {
+            margin-right: 0;
+            margin-left: 0.5rem;
+          }
+        }
+
+        .file-list-actions .btn i {
+          margin: 0;
+        }
+      }
+    }
+  }
+
+  // Form elements in RTL
+  #new-folder-form,
+  #inline-upload-form {
+    h3 i {
+      margin-right: 0;
+      margin-left: $spacing-sm;
+    }
+  }
+}
