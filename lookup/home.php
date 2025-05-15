@@ -134,7 +134,6 @@
             );
 
             let data;
-            // Check for non-JSON responses
             const contentType = response.headers.get("content-type");
             if (!contentType || !contentType.includes("application/json")) {
                 throw new Error(
@@ -157,8 +156,6 @@
                 );
                 return;
             }
-
-            // Show success result
             searchResult.innerHTML = `
                 <div class="result-container">
                     <h2>معلومات الطالب</h2>
@@ -169,8 +166,6 @@
                     <p><strong>القسم:</strong> ${data.node_name}</p>
                     <p><strong>النوع:</strong> ${data.gender}</p>
                     <p><strong>الجنسية:</strong> ${data.nationality}</p>
-                    ${data.section ? `<p><strong>السكشن:</strong> ${data.section}</p>` : ''}
-                    ${data.seat_number ? `<p><strong>رقم الجلوس:</strong> ${data.seat_number}</p>` : ''}
                 </div>`;
         } catch (error) {
             showError(error.message || "خطأ في الاتصال. يرجى المحاولة مرة أخرى لاحقاً.");

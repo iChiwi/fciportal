@@ -85,21 +85,31 @@ def extract_data(html_content):
         "nationality": nationality_elem.text.strip() if nationality_elem and nationality_elem.text else "N/A"
     }
 
-# Check database for student code match to fetch seat number
-def check_database(student_code):
+# Store national ID in database for student code
+def update_national_id(student_code, national_number):
     try:
         connection = mysql.connector.connect(**db_config)
         cursor = connection.cursor(dictionary=True)
         
-        query = """
-        SELECT seat_number, section 
-        FROM students 
+        # Check if student exists in database
+        check_query = """
+        SELECT id FROM students 
         WHERE studentcode = %s
         """
-        cursor.execute(query, (student_code,))
+        cursor.execute(check_query, (student_code,))
         result = cursor.fetchone()
-
-        return result if result else {}
+        
+        if result:
+            update_query = """
+            UPDATE students 
+            SET nationalssn = %s 
+            WHERE studentcode = %s
+            """
+            cursor.execute(update_query, (national_number, student_code))
+            connection.commit()
+            return {"success": True}
+        else:
+            return {"message": "Student not found in database"}
     except mysql.connector.Error as err:
         print(f"Database error: {err}")
         return {"error": "Database error occurred"}
@@ -119,7 +129,7 @@ def api_search_national():
     
     html_response = search_by_national_number(national_number)
     result = extract_data(html_response)
-    
+
     if "error" in result:
         return jsonify({"error": result["error"]}), 500
         
@@ -127,9 +137,7 @@ def api_search_national():
         return jsonify({"error": "No student found with this national number"}), 404
     
     if result["student_code"] != "N/A":
-        db_result = check_database(result["student_code"])
-        if db_result and not "error" in db_result:
-            result.update(db_result)
+        update_national_id(result["student_code"], national_number)
     
     return jsonify(result), 200
 
