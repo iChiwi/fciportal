@@ -156,6 +156,7 @@
                 );
                 return;
             }
+
             searchResult.innerHTML = `
                 <div class="result-container">
                     <h2>معلومات الطالب</h2>

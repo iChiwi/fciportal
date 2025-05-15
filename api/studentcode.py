@@ -85,15 +85,15 @@ def extract_data(html_content):
         "nationality": nationality_elem.text.strip() if nationality_elem and nationality_elem.text else "N/A"
     }
 
-# Store national ID in database for student code
 def update_national_id(student_code, national_number):
+    connection = None
+    cursor = None
     try:
         connection = mysql.connector.connect(**db_config)
         cursor = connection.cursor(dictionary=True)
         
-        # Check if student exists in database
         check_query = """
-        SELECT id FROM students 
+        SELECT seat_number FROM students 
         WHERE studentcode = %s
         """
         cursor.execute(check_query, (student_code,))
@@ -106,13 +106,15 @@ def update_national_id(student_code, national_number):
             WHERE studentcode = %s
             """
             cursor.execute(update_query, (national_number, student_code))
+            affected_rows = cursor.rowcount
             connection.commit()
-            return {"success": True}
+            return {"success": True, "affected_rows": affected_rows}
         else:
-            return {"message": "Student not found in database"}
+            return {"message": "Student not found in database", "success": False}
     except mysql.connector.Error as err:
-        print(f"Database error: {err}")
-        return {"error": "Database error occurred"}
+        if connection:
+            connection.rollback()
+        return {"error": "Database error occurred", "success": False}
     finally:
         if cursor:
             cursor.close()
@@ -137,7 +139,10 @@ def api_search_national():
         return jsonify({"error": "No student found with this national number"}), 404
     
     if result["student_code"] != "N/A":
-        update_national_id(result["student_code"], national_number)
+        db_result = update_national_id(result["student_code"], national_number)
+        result["nationalssn_updated"] = db_result.get("success", False)
+    else:
+        result["nationalssn_updated"] = False
     
     return jsonify(result), 200
 

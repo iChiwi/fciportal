@@ -27,16 +27,18 @@ def check_database(student_code):
         cursor = connection.cursor(dictionary=True)
         
         query = """
-        SELECT seat_number, section 
+        SELECT seat_number, name, nationalssn
         FROM students 
         WHERE studentcode = %s
         """
         cursor.execute(query, (student_code,))
         result = cursor.fetchone()
-
+        
+        if result:
+            result['has_nationalssn'] = result.get('nationalssn') is not None and result.get('nationalssn') != ''
+        
         return result if result else {}
     except mysql.connector.Error as err:
-        print(f"Database error: {err}")
         return {"error": "Database error occurred"}
     finally:
         if cursor:
