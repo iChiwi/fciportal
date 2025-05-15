@@ -46,7 +46,7 @@
                     <i class="fas fa-search" aria-hidden="true"></i>
                     <span>البحث عن طالب</span>
                 </a>
-                <a href="/results/" class="nav-button">
+                <a href="/studentresults/" class="nav-button">
                     <i class="fas fa-graduation-cap" aria-hidden="true"></i>
                     <span>نتائج الطلاب</span>
                 </a>

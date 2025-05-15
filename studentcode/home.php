@@ -42,7 +42,7 @@
                     <i class="fas fa-book" aria-hidden="true"></i>
                     <span>بوابة الطلاب</span>
                 </a>
-                <a href="/results/" class="nav-button">
+                <a href="/studentresults/" class="nav-button">
                     <i class="fas fa-graduation-cap" aria-hidden="true"></i>
                     <span>نتائج الطلاب</span>
                 </a>

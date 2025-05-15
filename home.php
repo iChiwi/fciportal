@@ -91,7 +91,7 @@ function safeNotificationDisplay($message) {
                     <i class="fas fa-search" aria-hidden="true"></i>
                     <span>البحث عن طالب</span>
                 </a>
-                <a href="/results/" class="nav-button">
+                <a href="/studentresults/" class="nav-button">
                     <i class="fas fa-graduation-cap" aria-hidden="true"></i>
                     <span>نتائج الطلاب</span>
                 </a>
@@ -168,7 +168,7 @@ function safeNotificationDisplay($message) {
                         <h3>البحث عن طالب</h3>
                         <p>ابحث عن كود الطالب الخاص بك بسهولة</p>
                     </a>
-                    <a class="feature-card" href="/results/">
+                    <a class="feature-card" href="/studentresults/">
                         <i class="fas fa-graduation-cap"></i>
                         <h3>نتائج الطلاب</h3>
                         <p>تحقق من نتائجك الدراسية ودرجاتك</p>
