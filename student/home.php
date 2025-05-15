@@ -38,7 +38,7 @@
                     <i class="fas fa-home" aria-hidden="true"></i>
                     <span>الصفحة الرئيسية</span>
                 </a>
-                <a href="/lookup/" class="nav-button">
+                <a href="/studentcode/" class="nav-button">
                     <i class="fas fa-search" aria-hidden="true"></i>
                     <span>البحث عن طالب</span>
                 </a>

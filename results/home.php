@@ -42,7 +42,7 @@ function auto_version($file) {
                     <i class="fas fa-book" aria-hidden="true"></i>
                     <span>بوابة الطلاب</span>
                 </a>
-                <a href="/lookup/" class="nav-button">
+                <a href="/studentcode/" class="nav-button">
                     <i class="fas fa-search" aria-hidden="true"></i>
                     <span>البحث عن طالب</span>
                 </a>

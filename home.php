@@ -19,57 +19,38 @@ function auto_version($file) {
     return $file;
 }
 
-// Function to handle Markdown-style links, regular URLs, and <br> tags
-function processLinks($text) {
-    // Replace <br> tags with a temporary placeholder to preserve them
-    $text = str_replace('<br>', '##BR_PLACEHOLDER##', $text);
-    
-    // Process the message content
+function processLinks($text) {    
     $processed = '';
     $position = 0;
     
-    // Find Markdown-style links
     while (preg_match('/\[([^\]]+)\]\(([^)]+)\)/', $text, $matches, PREG_OFFSET_CAPTURE, $position)) {
-        // Get everything before the link and escape it
         $beforeLink = substr($text, $position, $matches[0][1] - $position);
         $processed .= htmlspecialchars($beforeLink);
         
-        // Extract link parts
         $linkText = $matches[1][0];
         $linkUrl = $matches[2][0];
         
-        // Add the formatted link
         $processed .= '<a href="' . htmlspecialchars($linkUrl) . '" target="_blank" rel="noopener noreferrer">' . htmlspecialchars($linkText) . '</a>';
         
-        // Move position forward
         $position = $matches[0][1] + strlen($matches[0][0]);
     }
     
-    // Get the remaining text
     if ($position < strlen($text)) {
         $remainingText = substr($text, $position);
         
-        // Process regular URLs in the remaining text
         $remainingText = preg_replace_callback('/(https?:\/\/[^\s<>"]+)/', function($matches) {
             return '<a href="' . htmlspecialchars($matches[1]) . '" target="_blank" rel="noopener noreferrer">' . htmlspecialchars($matches[1]) . '</a>';
         }, $remainingText);
         
-        // Escape the rest of the text
         $processed .= htmlspecialchars($remainingText);
     }
-    
-    // Restore <br> tags
-    $processed = str_replace('##BR_PLACEHOLDER##', '<br>', $processed);
-    
+
     return $processed;
 }
 
-// Function to safely display notification messages with allowed HTML
 function safeNotificationDisplay($message) {
-    // First escape all HTML
     $escaped = htmlspecialchars($message);
     
-    // Process markdown links and URLs in the escaped content
     $withLinks = processLinks($escaped);
     
     return $withLinks;
@@ -106,7 +87,7 @@ function safeNotificationDisplay($message) {
                     <i class="fas fa-book" aria-hidden="true"></i>
                     <span>بوابة الطلاب</span>
                 </a>
-                <a href="/lookup/" class="nav-button">
+                <a href="/studentcode/" class="nav-button">
                     <i class="fas fa-search" aria-hidden="true"></i>
                     <span>البحث عن طالب</span>
                 </a>
@@ -156,7 +137,6 @@ function safeNotificationDisplay($message) {
                     </div>
                     <p class="notification-message">
                         <?php 
-                        // Process links first, then apply HTML escaping to the remaining text
                         $message = $notification['message'];
                         $message = safeNotificationDisplay($message);
                         echo $message;
@@ -183,7 +163,7 @@ function safeNotificationDisplay($message) {
                         <h3>المواد الدراسية</h3>
                         <p>الوصول إلى ملخصات المواد والمواد الدراسية التي أنشأها قادة الطلاب</p>
                     </a>
-                    <a class="feature-card" href="/lookup/">
+                    <a class="feature-card" href="/studentcode/">
                         <i class="fas fa-search"></i>
                         <h3>البحث عن طالب</h3>
                         <p>ابحث عن كود الطالب الخاص بك بسهولة</p>
@@ -201,7 +181,6 @@ function safeNotificationDisplay($message) {
                 </div>
             </section>
 
-            <!-- Help Section -->
             <section class="info-section">
                 <h2>
                     <i class="fas fa-question-circle"></i>
