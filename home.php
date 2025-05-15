@@ -83,7 +83,7 @@ function safeNotificationDisplay($message) {
 
 
             <div class="nav-links" id="nav-links">
-                <a href="/student/" class="nav-button">
+                <a href="/study/" class="nav-button">
                     <i class="fas fa-book" aria-hidden="true"></i>
                     <span>بوابة الطلاب</span>
                 </a>
@@ -158,7 +158,7 @@ function safeNotificationDisplay($message) {
                     مميزات البوابة
                 </h2>
                 <div class="features-grid">
-                    <a class="feature-card" href="/student/">
+                    <a class="feature-card" href="/study/">
                         <i class="fas fa-book"></i>
                         <h3>المواد الدراسية</h3>
                         <p>الوصول إلى ملخصات المواد والمواد الدراسية التي أنشأها قادة الطلاب</p>

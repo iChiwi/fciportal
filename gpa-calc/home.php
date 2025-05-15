@@ -87,7 +87,7 @@ $collegeSubjects = [
                     <i class="fas fa-home" aria-hidden="true"></i>
                     <span>الرئيسية</span>
                 </a>
-                <a href="/student/" class="nav-button">
+                <a href="/study/" class="nav-button">
                     <i class="fas fa-book" aria-hidden="true"></i>
                     <span>بوابة الطلاب</span>
                 </a>
