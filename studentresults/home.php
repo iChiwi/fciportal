@@ -168,15 +168,18 @@ function auto_version($file) {
                 return;
             }
 
+            resetResultsSection();
+            resultsSection.style.display = 'none';
+
+            searchResult.style.display = 'block';
             searchResult.innerHTML = `
                 <div class="loading-spinner" role="status">
                     <i class="fas fa-spinner fa-spin"></i>
                     <span>جارِ البحث...</span>
                 </div>`;
 
-            resultsSection.style.display = 'none';
-
             try {
+
                 const response = await fetch('/api/studentresults', {
                     method: 'POST',
                     headers: {
@@ -188,7 +191,6 @@ function auto_version($file) {
                     })
                 });
 
-                // Check for non-JSON responses
                 const contentType = response.headers.get("content-type");
                 if (!contentType || !contentType.includes("application/json")) {
                     throw new Error(
@@ -207,7 +209,6 @@ function auto_version($file) {
                     throw new Error(data.error || 'حدث خطأ في جلب النتائج');
                 }
 
-                // Clear loading spinner by hiding the search result div completely
                 searchResult.style.display = 'none';
                 searchResult.innerHTML = '';
 
@@ -226,7 +227,6 @@ function auto_version($file) {
         });
 
         function showError(message) {
-            // Reset display property when showing errors
             searchResult.style.display = 'block';
             searchResult.innerHTML = `
                 <div class="result-error" role="alert">
@@ -234,21 +234,27 @@ function auto_version($file) {
                 </div>`;
         }
 
+        function resetResultsSection() {
+            document.getElementById('student-name').textContent = '-';
+            document.getElementById('student-code').textContent = '-';
+            document.getElementById('student-phase').textContent = 'غير متوفر';
+            document.getElementById('overall-gpa').textContent = '0.0';
+            document.getElementById('overall-gpa').className = 'gpa-value';
+            document.getElementById('total-credit-hours').textContent = '0';
+
+            document.getElementById('semesters-container').innerHTML = '';
+        }
+
         function displayResults(results) {
             const semestersContainer = document.getElementById('semesters-container');
+
+            semestersContainer.innerHTML = '';
 
             if (!results || (Object.keys(results).length === 0)) {
                 semestersContainer.innerHTML = `
                     <div class="result-error" role="alert">
                         <span>لم يتم العثور على الطالب. يرجى التحقق من المعلومات والمحاولة مرة أخرى.</span>
                     </div>`;
-
-                document.getElementById('student-name').textContent = '-';
-                document.getElementById('student-code').textContent = '-';
-                document.getElementById('student-phase').textContent = 'غير متوفر';
-                document.getElementById('overall-gpa').textContent = '0.0';
-                document.getElementById('overall-gpa').className = 'gpa-value';
-                document.getElementById('total-credit-hours').textContent = '0';
                 return;
             }
 
