@@ -1,14 +1,14 @@
 <?php
 session_start();
+
+// Check if the user is logged in as an admin
 if (!isset($_SESSION['admin'])) {
     header('Content-Type: application/json');
     echo json_encode(['error' => 'Unauthorized access']);
     exit();
 }
 
-require_once '../config.php';
-
-// Get subject parameter
+// No database connection needed for file operations
 $subject = $_GET['subject'] ?? '';
 
 // Validate subject
@@ -19,14 +19,13 @@ if (!in_array($subject, $subjects)) {
     exit();
 }
 
-// Build the base directory path
+// Base directory for subjects
 $baseDir = dirname($_SERVER['DOCUMENT_ROOT']) . "/material/$subject/";
 
 // Recursive function to get all folders and subfolders
 function getFolders($dir, $base = '') {
     $folders = [];
     
-    // Add root folder
     if (empty($base)) {
         $folders[] = [
             'path' => '',
@@ -34,7 +33,6 @@ function getFolders($dir, $base = '') {
         ];
     }
     
-    // Ensure directory exists
     if (!file_exists($dir)) {
         mkdir($dir, 0777, true);
     }
@@ -42,7 +40,6 @@ function getFolders($dir, $base = '') {
     $items = scandir($dir);
     
     foreach ($items as $item) {
-        // Skip . and .. and hidden files
         if ($item[0] === '.') {
             continue;
         }
@@ -50,16 +47,13 @@ function getFolders($dir, $base = '') {
         $path = $dir . '/' . $item;
         
         if (is_dir($path)) {
-            // Calculate relative path
             $relativePath = $base ? $base . '/' . $item : $item;
             
-            // Add current folder
             $folders[] = [
                 'path' => $relativePath,
                 'name' => $item
             ];
             
-            // Add subfolders recursively
             $subfolders = getFolders($path, $relativePath);
             $folders = array_merge($folders, $subfolders);
         }

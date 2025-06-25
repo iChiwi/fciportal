@@ -1,6 +1,5 @@
 <?php
-require_once '../config.php';
-
+// Auto versioning for static files | Cache fix
 function auto_version($file) {
     if (file_exists($file)) {
         return $file . '?v=' . filemtime($file);
@@ -12,19 +11,23 @@ function auto_version($file) {
 <html lang="ar" dir="rtl">
 
 <head>
+    <!-- Metadata Information -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="منصتك الشاملة للموارد والأدوات الأكاديمية لطلاب كلية الحاسبات والمعلومات" />
+    <!-- Website Information -->
     <title>نتائج الطلاب — مساعد الطالب</title>
-    <meta name="description" content="اعرف نتائجك الدراسية بسهولة من موقع الجامعة" />
-    <link href="<?php echo auto_version('../static/css/main.css'); ?>" rel="stylesheet">
+    <!-- Favicons & Stylesheets -->
     <link rel="apple-touch-icon" sizes="180x180" href="../static/img/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="../static/img/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="../static/img/favicon-16x16.png" />
     <link rel="manifest" href="../static/img/site.webmanifest" />
+    <link href="<?php echo auto_version('../static/css/main.css'); ?>" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 </head>
 
 <body>
+    <!-- Navigation Bar (Hamburger included for mobile) -->
     <nav class="nav-container">
         <div class="nav-content">
             <div class="hamburger" id="hamburger">
@@ -58,6 +61,7 @@ function auto_version($file) {
         </div>
     </nav>
 
+    <!-- Header Container -->
     <header>
         <div class="header-content">
             <h1>نتائج الطلاب</h1>
@@ -65,8 +69,10 @@ function auto_version($file) {
         </div>
     </header>
 
+    <!-- Main Content -->
     <main>
         <div class="container">
+            <!-- Search Section -->
             <section id="search-section">
                 <h2>
                     <i class="fas fa-id-card"></i>
@@ -81,7 +87,7 @@ function auto_version($file) {
                 </form>
                 <div id="search-result"></div>
             </section>
-
+            <!-- Results Section -->
             <section id="results-section" class="info-section gpa-calculator" style="display: none;">
                 <h2>
                     <i class="fas fa-clipboard-list"></i>
@@ -110,12 +116,7 @@ function auto_version($file) {
                         <div class="gpa-value" id="total-credit-hours">0</div>
                     </div>
                 </div>
-
-                <div id="semesters-container">
-
-                </div>
-
-
+                <div id="semesters-container"></div>
                 <div class="gpa-info" style="margin-top: 1.5rem;">
                     <p>
                         <i class="fas fa-info-circle"></i>
@@ -137,12 +138,14 @@ function auto_version($file) {
         </div>
     </main>
 
+    <!-- Footer Message -->
     <footer class="copyright-footer">
         <p style="direction: ltr;">&copy; <?php echo date("Y"); ?> ichiwi.me</p>
     </footer>
 
     <script src="<?php echo auto_version('../static/js/main.js'); ?>"></script>
     <script>
+    // Handling the search form and displaying results
     document.addEventListener('DOMContentLoaded', function() {
         const form = document.getElementById('search-form');
         const resultsSection = document.getElementById('results-section');
@@ -150,6 +153,7 @@ function auto_version($file) {
         const searchSection = document.getElementById('search-section');
         const searchResult = document.getElementById('search-result');
 
+        // Event listener for input validation
         nationalInput.addEventListener("input", function() {
             this.value = this.value.replace(/[^0-9]/g, "");
             if (this.value.length === 14) {
@@ -158,7 +162,7 @@ function auto_version($file) {
                 this.classList.remove("valid");
             }
         });
-
+        // Event listener for form submission
         form.addEventListener('submit', async function(event) {
             event.preventDefault();
 
@@ -226,6 +230,7 @@ function auto_version($file) {
             }
         });
 
+        // Function to display error messages
         function showError(message) {
             searchResult.style.display = 'block';
             searchResult.innerHTML = `
@@ -234,6 +239,7 @@ function auto_version($file) {
                 </div>`;
         }
 
+        // Function to reset the results section
         function resetResultsSection() {
             document.getElementById('student-name').textContent = '-';
             document.getElementById('student-code').textContent = '-';
@@ -245,6 +251,7 @@ function auto_version($file) {
             document.getElementById('semesters-container').innerHTML = '';
         }
 
+        // Function to display results in the semesters container
         function displayResults(results) {
             const semestersContainer = document.getElementById('semesters-container');
 

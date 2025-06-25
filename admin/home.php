@@ -1,17 +1,16 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 session_start();
+
+// Check if the user is logged in as an admin.
 if (!isset($_SESSION['admin'])) {
     header("Location: login.php");
     exit();
 }
 
+// Database connection | Ensure you have a config.php file with the correct database connection settings
 require '../config.php';
 
-// Process deletion if a delete_notification POST request is sent.
+// Process notification deletion
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_notification'])) {
     $notificationId = intval($_POST['notification_id']);
     $stmt = $pdo->prepare("DELETE FROM notifications WHERE id = :id");
@@ -19,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_notification'])
     $delete_feedback = "Notification deleted successfully.";
 }
 
-// Process notification submission.
+// Process notification submission
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_notification'])) {
     $notification_message = trim($_POST['notification_message']);
     if (!empty($notification_message)) {
@@ -34,10 +33,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_notification'])
     }
 }
 
-// Fetch all notifications for management.
+// Fetch all notifications for management
 $stmt = $pdo->query("SELECT id, message, created_at FROM notifications ORDER BY created_at DESC");
 $notifications = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+// Auto versioning for static files | Cache fix
 function auto_version($file) {
     if (file_exists($file)) {
         return $file . '?v=' . filemtime($file);
@@ -49,19 +49,23 @@ function auto_version($file) {
 <html lang="ar" dir="rtl">
 
 <head>
+    <!-- Metadata Information -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>لوحة التحكم — بوابة المسؤول</title>
     <meta name="description" content="منصتك الشاملة للموارد والأدوات الأكاديمية لطلاب كلية الحاسبات والمعلومات" />
-    <link href="<?php echo auto_version('../static/css/main.css'); ?>" rel="stylesheet">
+    <!-- Website Information -->
+    <title>لوحة التحكم — بوابة المسؤول</title>
+    <!-- Favicons & Stylesheets -->
     <link rel="apple-touch-icon" sizes="180x180" href="../static/img/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="../static/img/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="../static/img/favicon-16x16.png" />
     <link rel="manifest" href="../static/img/site.webmanifest" />
+    <link href="<?php echo auto_version('../static/css/main.css'); ?>" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 </head>
 
 <body>
+    <!-- Navigation Bar (Hamburger included for mobile) -->
     <nav class="nav-container">
         <div class="nav-content">
             <div class="hamburger" id="hamburger">
@@ -99,6 +103,7 @@ function auto_version($file) {
         </div>
     </nav>
 
+    <!-- Header Container -->
     <header>
         <div class="header-content">
             <h1>بوابة المسؤول</h1>
@@ -106,6 +111,7 @@ function auto_version($file) {
         </div>
     </header>
 
+    <!-- Main Content -->
     <main>
         <div class="container">
             <!-- File Manager Section -->
@@ -129,18 +135,13 @@ function auto_version($file) {
                         </div>
                     </div>
                     <div id="files-container"></div>
-                </div>
-
-                <div class="form-group">
+                </div>                <div class="form-group">
                     <div class="form-actions">
                         <button type="button" id="back-button" class="btn btn-secondary" disabled>
                             <i class="fas fa-arrow-right"></i> العودة للخلف
                         </button>
                         <button type="button" id="new-folder-btn" class="btn btn-secondary" disabled>
                             <i class="fas fa-folder-plus"></i> إنشاء مجلد جديد
-                        </button>
-                        <button type="button" id="toggle-upload-form" class="btn">
-                            <i class="fas fa-upload"></i> تحميل ملف
                         </button>
                     </div>
                 </div>
@@ -155,27 +156,7 @@ function auto_version($file) {
                         <button type="button" id="create-folder-btn" class="btn">إنشاء</button>
                         <button type="button" id="cancel-folder-btn" class="btn btn-secondary">إلغاء</button>
                     </div>
-                </div>
-
-                <div id="inline-upload-form" class="form-group" style="display: none;">
-                    <h3><i class="fas fa-upload"></i> تحميل ملف جديد</h3>
-                    <div class="file-input-container">
-                        <input type="file" id="summary-file" name="file" required hidden />
-                        <label for="summary-file" id="custom-file-label">اختر ملف للتحميل</label>
-                    </div>
-                    <div class="form-group" style="margin-top: 10px;">
-                        <label for="file-order">ترتيب الملف (اختياري)</label>
-                        <input type="number" id="file-order" name="order" min="1" max="99"
-                            placeholder="مثال: 1، 2، 3...">
-                    </div>
-                    <div class="form-actions">
-                        <button type="button" id="upload-button" class="btn">تحميل الملف</button>
-                        <button type="button" id="cancel-upload-btn" class="btn btn-secondary">إلغاء</button>
-                    </div>
-                    <div id="upload-status" class="success-message" style="display: none;"></div>
-                </div>
-
-                <input type="hidden" id="current-folder" readonly>
+                </div>                <input type="hidden" id="current-folder" readonly>
                 <input type="hidden" id="folder-path" name="folderPath" value="">
             </section>
 
@@ -244,6 +225,8 @@ function auto_version($file) {
         </div>
     </main>
 
+
+    <!-- Footer Message -->
     <footer class="copyright-footer">
         <p style="direction: ltr;">&copy; <?php echo date("Y"); ?> ichiwi.me</p>
     </footer>

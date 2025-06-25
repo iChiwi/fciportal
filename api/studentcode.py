@@ -1,5 +1,3 @@
-import os
-import mysql.connector
 from bs4 import BeautifulSoup
 import requests
 from flask import Flask, request, jsonify
@@ -7,17 +5,6 @@ from flask_cors import CORS
 from werkzeug.exceptions import HTTPException
 from urllib3.util.retry import Retry
 from requests.adapters import HTTPAdapter
-import dotenv
-
-# Database Configuration & Environment Variables
-dotenv.load_dotenv('/var/www/.env')
-
-db_config = {
-    'host': os.getenv('MYSQL_HOST'),
-    'user': os.getenv('MYSQL_USER'),
-    'password': os.getenv('MYSQL_PASSWORD'),
-    'database': 'fci',
-}
 
 # Creation of session to the target website
 def create_session():
@@ -35,7 +22,7 @@ def create_session():
 # Flask Configuration
 app = Flask(__name__)
 app.config['DEBUG'] = False
-CORS(app, resources={r"/*": {"origins": ["https://fci.ichiwi.me"]}})
+CORS(app, resources={r"/*": {"origins": ["TARGET_ORIGIN"]}})  # Replace TARGET_ORIGIN with your allowed origin
 TIMEOUT = 15
 
 # Target URLs
@@ -72,7 +59,7 @@ def extract_data(html_content):
     node_elem = soup.find(id="lblStudNode")
     gender_elem = soup.find(id="lblGENDER_DESCR_AR")
     nationality_elem = soup.find(id="lblNATIONALITY_DESCR_AR")
-
+    
     student_code = code_elem.text.strip() if code_elem and code_elem.text else "N/A"
     
     return {
@@ -85,43 +72,7 @@ def extract_data(html_content):
         "nationality": nationality_elem.text.strip() if nationality_elem and nationality_elem.text else "N/A"
     }
 
-def update_national_id(student_code, national_number):
-    connection = None
-    cursor = None
-    try:
-        connection = mysql.connector.connect(**db_config)
-        cursor = connection.cursor(dictionary=True)
-        
-        check_query = """
-        SELECT seat_number FROM students 
-        WHERE studentcode = %s
-        """
-        cursor.execute(check_query, (student_code,))
-        result = cursor.fetchone()
-        
-        if result:
-            update_query = """
-            UPDATE students 
-            SET nationalssn = %s 
-            WHERE studentcode = %s
-            """
-            cursor.execute(update_query, (national_number, student_code))
-            affected_rows = cursor.rowcount
-            connection.commit()
-            return {"success": True, "affected_rows": affected_rows}
-        else:
-            return {"message": "Student not found in database", "success": False}
-    except mysql.connector.Error as err:
-        if connection:
-            connection.rollback()
-        return {"error": "Database error occurred", "success": False}
-    finally:
-        if cursor:
-            cursor.close()
-        if connection:
-            connection.close()
-
-# Final routing for fci.ichiwi.me/api/studentcode
+# Final routing for /api/studentcode
 @app.route("/", methods=["POST"])
 def api_search_national():
     data = request.get_json(force=True)
@@ -137,12 +88,6 @@ def api_search_national():
         
     if all(value == "N/A" for value in result.values()):
         return jsonify({"error": "No student found with this national number"}), 404
-    
-    if result["student_code"] != "N/A":
-        db_result = update_national_id(result["student_code"], national_number)
-        result["nationalssn_updated"] = db_result.get("success", False)
-    else:
-        result["nationalssn_updated"] = False
     
     return jsonify(result), 200
 

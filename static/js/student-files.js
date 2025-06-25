@@ -1,16 +1,10 @@
-/**
- * Student File Browser JavaScript
- * Provides functionality for browsing, viewing, and downloading files
- */
 document.addEventListener("DOMContentLoaded", function () {
-  // Elements
   const subjectSelect = document.getElementById("subject-select");
   const filesContainer = document.getElementById("files-container");
   const backButton = document.getElementById("back-button");
   const currentFolderDisplay = document.getElementById("current-folder");
   const folderPathInput = document.getElementById("folder-path");
 
-  // State variables
   let currentSubject = "";
   let currentPath = "";
 
@@ -22,9 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
     backButton.addEventListener("click", navigateBack);
   }
 
-  /**
-   * Load files for the selected subject
-   */
+  // Load files for the selected subject
   function loadSubjectFiles() {
     currentSubject = subjectSelect.value;
     currentPath = "";
@@ -49,16 +41,13 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
-  /**
-   * Display files and folders in the container
-   */
+  // Display files and folders in the container
   function displayFiles(data) {
     if (data.error) {
       filesContainer.innerHTML = `<div class="error-message"><i class="fas fa-exclamation-triangle"></i> ${data.error}</div>`;
       return;
     }
 
-    // Create breadcrumbs
     let html = "";
     html += renderBreadcrumb(data.subject, data.currentPath);
 
@@ -66,22 +55,18 @@ document.addEventListener("DOMContentLoaded", function () {
       html +=
         '<div class="empty-message"><i class="fas fa-folder-open"></i> لا توجد ملفات أو مجلدات في هذا المجلد.</div>';
     } else {
-      // Sort items - folders first, then files
+      // Folders first, then files
       const items = [...data.items];
       items.sort((a, b) => {
-        // Type comparison (folders first)
         if (a.type !== b.type) {
           return a.type === "folder" ? -1 : 1;
         }
-        // For files, consider order
         if (a.type === "file" && a.order !== b.order) {
           return a.order - b.order;
         }
-        // Alphabetical sort
         return a.name.localeCompare(b.name);
       });
 
-      // Create the file list view
       html += '<div class="file-list-view">';
 
       items.forEach((item) => {
@@ -109,7 +94,6 @@ document.addEventListener("DOMContentLoaded", function () {
           <div class="file-list-actions">`;
 
         if (!isFolder) {
-          // File actions for students (download and view only)
           html += `
             <a href="${item.url}" class="btn download-action" title="تحميل الملف" download>
               <i class="fas fa-download"></i>
@@ -136,9 +120,7 @@ document.addEventListener("DOMContentLoaded", function () {
     backButton.disabled = !data.currentPath;
   }
 
-  /**
-   * Render breadcrumb navigation
-   */
+  // Render breadcrumb navigation
   function renderBreadcrumb(subject, path) {
     const subjectNames = {
       or: "بحوث العمليات",
@@ -176,11 +158,8 @@ document.addEventListener("DOMContentLoaded", function () {
     return html;
   }
 
-  /**
-   * Add event listeners to dynamically created elements
-   */
+  // Add event listeners for folder navigation and breadcrumb items
   function addEventListeners() {
-    // Folder click events in list view
     document
       .querySelectorAll(".file-list-item.folder-item .file-list-details")
       .forEach((item) => {
@@ -195,16 +174,13 @@ document.addEventListener("DOMContentLoaded", function () {
       item.addEventListener("click", function () {
         const path = this.getAttribute("data-path");
         if (path !== undefined) {
-          // Check if data-path exists
           navigateToFolder(path);
         }
       });
     });
   }
 
-  /**
-   * Navigate to a specific folder
-   */
+  // Navigate to a specific folder
   function navigateToFolder(folderPath) {
     currentPath = folderPath;
     folderPathInput.value = folderPath;
@@ -225,14 +201,11 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
-  /**
-   * Navigate back to the parent folder
-   */
+  // Navigate back to the previous folder
   function navigateBack() {
     if (!currentPath) return;
 
     const pathParts = currentPath.split("/");
-    // Remove the last part to go up one level
     pathParts.pop();
     currentPath = pathParts.join("/");
     folderPathInput.value = currentPath;
@@ -253,9 +226,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
-  /**
-   * Update the current folder display
-   */
+  // Update the current folder display
   function updateCurrentFolder() {
     if (currentFolderDisplay) {
       const subjectNames = {
@@ -275,7 +246,6 @@ document.addEventListener("DOMContentLoaded", function () {
         currentFolderDisplay.value = `${subjectName}/`;
       }
 
-      // Add animation class if supported
       if (currentFolderDisplay.classList) {
         currentFolderDisplay.classList.add("highlight-animation");
         setTimeout(() => {
@@ -288,7 +258,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // Populate subject select on page load
   function populateSubjectSelect() {
     if (subjectSelect) {
-      // Add options to the subject select
       const subjects = [
         { value: "or", label: "بحوث العمليات" },
         { value: "discrete", label: "التراكيب المحددة" },

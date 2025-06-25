@@ -1,18 +1,16 @@
 <?php
 session_start();
+
+// Check if the user is logged in as an admin
 if (!isset($_SESSION['admin'])) {
     header('Content-Type: application/json');
     echo json_encode(['error' => 'Unauthorized access']);
     exit();
 }
 
-require_once '../config.php';
-
-// Get parameters
 $subject = isset($_GET['subject']) ? $_GET['subject'] : '';
 $folderPath = isset($_GET['path']) ? $_GET['path'] : '';
 
-// Debug information (will be included in response when needed)
 $debug = [];
 
 // Validate subject
@@ -23,14 +21,12 @@ if (!in_array($subject, $subjects)) {
     exit();
 }
 
-// Sanitize folder path for security
 if (!empty($folderPath)) {
     $folderPath = str_replace('..', '', $folderPath); // Prevent directory traversal
     $folderPath = trim($folderPath, '/');
 }
 
-// Build the full server path
-$baseDir = "/var/www/fci.ichiwi.me/material/";
+$baseDir = "ENTER HERE"; // Base directory for materials from root
 $fullPath = "{$baseDir}{$subject}/";
 
 if (!empty($folderPath)) {
@@ -60,10 +56,9 @@ if (!file_exists($fullPath)) {
     }
 }
 
-// Get files and folders
 $items = [];
 
-// Helper function to format file size for display
+// Format file size for display
 function formatFileSize($bytes) {
     if ($bytes >= 1073741824) {
         return number_format($bytes / 1073741824, 2) . ' GB';
@@ -76,7 +71,7 @@ function formatFileSize($bytes) {
     }
 }
 
-// Helper function to get appropriate font awesome icon class based on file extension
+// Font awesome icon class based on file extension
 function getFileIconClass($extension) {
     $iconMap = [
         'pdf' => 'fa-file-pdf',
@@ -105,7 +100,6 @@ try {
         $files = scandir($fullPath);
         
         foreach ($files as $file) {
-            // Skip . and ..
             if ($file === '.' || $file === '..') {
                 continue;
             }
@@ -114,7 +108,6 @@ try {
             $relativePath = !empty($folderPath) ? $folderPath . '/' . $file : $file;
             
             if (is_dir($path)) {
-                // This is a folder
                 $items[] = [
                     'name' => $file,
                     'path' => $relativePath,
@@ -122,12 +115,10 @@ try {
                     'icon' => 'fa-folder'
                 ];
             } else {
-                // This is a file
                 $fileInfo = pathinfo($file);
                 $extension = isset($fileInfo['extension']) ? strtolower($fileInfo['extension']) : '';
                 $order = 0;
                 
-                // Check if file has an order prefix (e.g., "01_filename.pdf")
                 if (preg_match('/^([0-9]+)_/', $fileInfo['filename'], $matches)) {
                     $order = (int)$matches[1];
                 }
@@ -145,19 +136,16 @@ try {
             }
         }
         
-        // Sort items: folders first, then files by order/name
+        // Folders first, then files by order/name
         usort($items, function($a, $b) {
-            // Folders come before files
             if ($a['type'] !== $b['type']) {
                 return $a['type'] === 'folder' ? -1 : 1;
             }
             
-            // If both are files and have different order numbers
             if ($a['type'] === 'file' && isset($a['order']) && isset($b['order']) && $a['order'] !== $b['order']) {
                 return $a['order'] - $b['order'];
             }
             
-            // Otherwise sort by name
             return strcmp($a['name'], $b['name']);
         });
     } else {

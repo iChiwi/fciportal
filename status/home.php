@@ -1,30 +1,33 @@
+<?php
+// Auto versioning for static files | Cache fix
+function auto_version($file) {
+    if (file_exists($file)) {
+        return $file . '?v=' . filemtime($file);
+    }
+    return $file;
+}
+?>
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حالة النظام — مساعد الطالب</title>
+    <!-- Metadata Information -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="منصتك الشاملة للموارد والأدوات الأكاديمية لطلاب كلية الحاسبات والمعلومات" />
-    <?php 
-    require_once '../config.php';
-    
-    function auto_version($file) {
-        if (file_exists($file)) {
-            return $file . '?v=' . filemtime($file);
-        }
-        return $file;
-    }
-    ?>
+    <!-- Website Information -->
+    <title>حالة النظام — مساعد الطالب</title>
+    <!-- Favicons & Stylesheets -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../static/img/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../static/img/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../static/img/favicon-16x16.png" />
+    <link rel="manifest" href="../static/img/site.webmanifest" />
     <link href="<?php echo auto_version('../static/css/main.css'); ?>" rel="stylesheet">
-    <link rel="apple-touch-icon" sizes="180x180" href="../static/img/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="../static/img/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../static/img/favicon-16x16.png">
-    <link rel="manifest" href="../static/img/site.webmanifest">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 </head>
 
 <body>
+    <!-- Navigation Bar (Hamburger included for mobile) -->
     <nav class="nav-container">
         <div class="nav-content">
             <div class="hamburger" id="hamburger">
@@ -62,6 +65,8 @@
         </div>
     </nav>
 
+
+    <!-- Header Container -->
     <header>
         <div class="header-content">
             <h1>حالة النظام</h1>
@@ -69,8 +74,10 @@
         </div>
     </header>
 
+    <!-- Main Content -->
     <main>
         <div class="container">
+            <!-- Status Section -->
             <section class="info-section">
                 <div class="status-overview">
                     <div class="status-summary">
@@ -123,6 +130,7 @@
         </div>
     </main>
 
+    <!-- Footer Message -->
     <footer class="copyright-footer">
         <p style="direction: ltr;">&copy; <?php echo date("Y"); ?> ichiwi.me</p>
     </footer>

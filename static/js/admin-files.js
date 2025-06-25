@@ -1,7 +1,3 @@
-/**
- * Admin File Manager JavaScript
- * Provides functionality for browsing, creating folders, uploading, and managing files
- */
 document.addEventListener("DOMContentLoaded", function () {
   // Elements
   const subjectSelect = document.getElementById("subject");
@@ -12,42 +8,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const folderNameInput = document.getElementById("new-folder-name");
   const createFolderBtn = document.getElementById("create-folder-btn");
   const cancelFolderBtn = document.getElementById("cancel-folder-btn");
-  const toggleUploadFormBtn = document.getElementById("toggle-upload-form");
-  const uploadForm = document.getElementById("inline-upload-form");
-  const fileInput = document.getElementById("summary-file");
-  const customFileLabel = document.getElementById("custom-file-label");
-  const uploadButton = document.getElementById("upload-button");
-  const cancelUploadBtn = document.getElementById("cancel-upload-btn");
-  const uploadStatus = document.getElementById("upload-status");
   const folderPathInput = document.getElementById("folder-path");
   const currentFolderDisplay = document.getElementById("current-folder");
 
   // State variables
   let currentSubject = "";
   let currentPath = "";
-  let isDebugMode = false;
-
-  // Enable debug mode with double Shift key press
-  let shiftCount = 0;
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "Shift") {
-      shiftCount++;
-      if (shiftCount === 2) {
-        isDebugMode = !isDebugMode;
-        if (isDebugMode) {
-          showNotification("تم تفعيل وضع التصحيح");
-        } else {
-          showNotification("تم إيقاف وضع التصحيح");
-          // Remove any debug info elements
-          document.querySelectorAll(".debug-info").forEach((el) => el.remove());
-        }
-        shiftCount = 0;
-      }
-      setTimeout(() => {
-        shiftCount = 0;
-      }, 500);
-    }
-  });
 
   // Event Listeners
   if (subjectSelect) {
@@ -65,22 +31,8 @@ document.addEventListener("DOMContentLoaded", function () {
   if (cancelFolderBtn) {
     cancelFolderBtn.addEventListener("click", hideNewFolderForm);
   }
-  if (toggleUploadFormBtn) {
-    toggleUploadFormBtn.addEventListener("click", toggleUploadForm);
-  }
-  if (fileInput) {
-    fileInput.addEventListener("change", updateFileLabel);
-  }
-  if (uploadButton) {
-    uploadButton.addEventListener("click", uploadFile);
-  }
-  if (cancelUploadBtn) {
-    cancelUploadBtn.addEventListener("click", hideUploadForm);
-  }
 
-  /**
-   * Load files for the selected subject
-   */
+  // Load files for the selected subject
   function loadSubjectFiles() {
     currentSubject = subjectSelect.value;
     currentPath = "";
@@ -106,19 +58,10 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
-  /**
-   * Display files and folders in the container
-   */
+  // Display files and folders in the container
   function displayFiles(data) {
-    if (isDebugMode && data.debug) {
-      console.log("Server response:", data);
-    }
-
     if (data.error) {
       filesContainer.innerHTML = `<div class="error-message"><i class="fas fa-exclamation-triangle"></i> ${data.error}</div>`;
-      if (isDebugMode && data.debug) {
-        addDebugInfo(data.debug);
-      }
       return;
     }
 
@@ -130,18 +73,15 @@ document.addEventListener("DOMContentLoaded", function () {
       html +=
         '<div class="empty-message"><i class="fas fa-folder-open"></i> لا توجد ملفات أو مجلدات في هذا المجلد.</div>';
     } else {
-      // Sort items - folders first, then files
+      // Folders first, then files
       const items = [...data.items];
       items.sort((a, b) => {
-        // Type comparison (folders first)
         if (a.type !== b.type) {
           return a.type === "folder" ? -1 : 1;
         }
-        // For files, consider order
         if (a.type === "file" && a.order !== b.order) {
           return a.order - b.order;
         }
-        // Alphabetical sort
         return a.name.localeCompare(b.name);
       });
 
@@ -173,14 +113,12 @@ document.addEventListener("DOMContentLoaded", function () {
           <div class="file-list-actions">`;
 
         if (isFolder) {
-          // Folder actions
           html += `
             <button class="btn btn-danger delete-folder-btn" title="حذف المجلد" data-path="${item.path}">
               <i class="fas fa-trash-alt"></i>
             </button>
           `;
         } else {
-          // File actions
           html += `
             <a href="${item.url}" class="btn download-action" title="تحميل الملف" download>
               <i class="fas fa-download"></i>
@@ -204,10 +142,6 @@ document.addEventListener("DOMContentLoaded", function () {
       html += "</div>";
     }
 
-    if (isDebugMode && data.debug) {
-      addDebugInfo(data.debug);
-    }
-
     filesContainer.innerHTML = html;
 
     // Add event listeners to the dynamically created elements
@@ -217,9 +151,7 @@ document.addEventListener("DOMContentLoaded", function () {
     backButton.disabled = !data.currentPath;
   }
 
-  /**
-   * Render breadcrumb navigation
-   */
+  // Render breadcrumb navigation
   function renderBreadcrumb(subject, path) {
     const subjectNames = {
       or: "بحوث العمليات",
@@ -257,11 +189,8 @@ document.addEventListener("DOMContentLoaded", function () {
     return html;
   }
 
-  /**
-   * Add event listeners to dynamically created elements
-   */
+  // Add event listeners for folder navigation and breadcrumb items
   function addEventListeners() {
-    // Folder click events in list view
     document
       .querySelectorAll(".file-list-item.folder-item .file-list-details")
       .forEach((item) => {
@@ -276,7 +205,6 @@ document.addEventListener("DOMContentLoaded", function () {
       item.addEventListener("click", function () {
         const path = this.getAttribute("data-path");
         if (path !== undefined) {
-          // Check if data-path exists
           navigateToFolder(path);
         }
       });
@@ -323,9 +251,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  /**
-   * Navigate to a specific folder
-   */
+  // Navigate to a specific folder
   function navigateToFolder(folderPath) {
     currentPath = folderPath;
     folderPathInput.value = folderPath;
@@ -346,14 +272,11 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
-  /**
-   * Navigate back to the parent folder
-   */
+  // Navigate back to the previous folder
   function navigateBack() {
     if (!currentPath) return;
 
     const pathParts = currentPath.split("/");
-    // Remove the last part to go up one level
     pathParts.pop();
     currentPath = pathParts.join("/");
     folderPathInput.value = currentPath;
@@ -374,28 +297,19 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
-  /**
-   * Show the new folder form
-   */
+  // Show the new folder form
   function showNewFolderForm() {
     newFolderForm.style.display = "block";
     folderNameInput.value = "";
     folderNameInput.focus();
-
-    // Hide the upload form if visible
-    uploadForm.style.display = "none";
   }
 
-  /**
-   * Hide the new folder form
-   */
+  // Hide the new folder form
   function hideNewFolderForm() {
     newFolderForm.style.display = "none";
   }
 
-  /**
-   * Create a new folder
-   */
+  // Create a new folder
   function createFolder() {
     const folderName = folderNameInput.value.trim();
 
@@ -434,9 +348,6 @@ document.addEventListener("DOMContentLoaded", function () {
           navigateToFolder(data.folderPath);
         } else {
           alert("فشل في إنشاء المجلد: " + (data.error || "خطأ غير معروف"));
-          if (isDebugMode && data.debug) {
-            addDebugInfo(data.debug);
-          }
         }
       })
       .catch((error) => {
@@ -450,122 +361,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
-  /**
-   * Toggle the upload form visibility
-   */
-  function toggleUploadForm() {
-    if (uploadForm.style.display === "none" || !uploadForm.style.display) {
-      uploadForm.style.display = "block";
-      customFileLabel.innerHTML = "اختر ملف للتحميل";
-      fileInput.value = "";
-      document.getElementById("file-order").value = "";
-    } else {
-      uploadForm.style.display = "none";
-    }
-  }
-
-  /**
-   * Hide the upload form
-   */
-  function hideUploadForm() {
-    uploadForm.style.display = "none";
-  }
-
-  /**
-   * Update the custom file input label with the selected filename
-   */
-  function updateFileLabel() {
-    if (fileInput.files.length > 0) {
-      customFileLabel.innerHTML = fileInput.files[0].name;
-    } else {
-      customFileLabel.innerHTML = "اختر ملف للتحميل";
-    }
-  }
-
-  /**
-   * Upload a file
-   */
-  function uploadFile() {
-    if (!fileInput.files.length) {
-      alert("الرجاء اختيار ملف للتحميل");
-      return;
-    }
-
-    const fileSize = fileInput.files[0].size;
-    const maxSize = 50 * 1024 * 1024; // 50MB
-
-    if (fileSize > maxSize) {
-      alert("حجم الملف كبير جدًا. الحد الأقصى هو 50 ميجابايت.");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("file", fileInput.files[0]);
-    formData.append("subject", currentSubject);
-    formData.append("folderPath", currentPath);
-
-    const orderInput = document.getElementById("file-order");
-    if (orderInput && orderInput.value) {
-      formData.append("order", orderInput.value);
-    }
-
-    // Show loading state
-    uploadButton.disabled = true;
-    uploadButton.innerHTML =
-      '<i class="fas fa-sync fa-spin"></i> جاري التحميل...';
-    uploadStatus.innerHTML = "جاري تحميل الملف...";
-    uploadStatus.style.display = "block";
-
-    fetch("upload_handler.php", {
-      method: "POST",
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          uploadStatus.innerHTML = "تم تحميل الملف بنجاح";
-          uploadStatus.style.display = "block";
-
-          // Reset form
-          fileInput.value = "";
-          customFileLabel.innerHTML = "اختر ملف للتحميل";
-          document.getElementById("file-order").value = "";
-
-          // Refresh the file list
-          navigateToFolder(currentPath);
-
-          // Hide the upload form after a delay
-          setTimeout(() => {
-            hideUploadForm();
-            uploadStatus.style.display = "none";
-          }, 2000);
-        } else {
-          uploadStatus.innerHTML =
-            "فشل في تحميل الملف: " + (data.error || "خطأ غير معروف");
-          uploadStatus.style.display = "block";
-          uploadStatus.className = "error-message";
-
-          if (isDebugMode && data.debug) {
-            addDebugInfo(data.debug);
-          }
-        }
-      })
-      .catch((error) => {
-        console.error("خطأ في تحميل الملف:", error);
-        uploadStatus.innerHTML = "حدث خطأ أثناء تحميل الملف";
-        uploadStatus.style.display = "block";
-        uploadStatus.className = "error-message";
-      })
-      .finally(() => {
-        // Reset button state
-        uploadButton.disabled = false;
-        uploadButton.innerHTML = "تحميل الملف";
-      });
-  }
-
-  /**
-   * Delete a file
-   */
+  // Delete a file
   function deleteFile(filePath) {
     const formData = new FormData();
     formData.append("delete_file", "true");
@@ -580,13 +376,9 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((data) => {
         if (data.success) {
           showNotification("تم حذف الملف بنجاح");
-          // Refresh the file list
           navigateToFolder(currentPath);
         } else {
           alert("فشل في حذف الملف: " + (data.error || "خطأ غير معروف"));
-          if (isDebugMode && data.debug) {
-            addDebugInfo(data.debug);
-          }
         }
       })
       .catch((error) => {
@@ -595,9 +387,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
-  /**
-   * Delete a folder
-   */
+  // Delete a folder
   function deleteFolder(folderPath) {
     const formData = new FormData();
     formData.append("delete_folder", "true");
@@ -612,7 +402,6 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((data) => {
         if (data.success) {
           showNotification("تم حذف المجلد بنجاح");
-          // Refresh the file list - go back to parent folder if needed
           if (currentPath === folderPath) {
             navigateBack();
           } else {
@@ -620,9 +409,6 @@ document.addEventListener("DOMContentLoaded", function () {
           }
         } else {
           alert("فشل في حذف المجلد: " + (data.error || "خطأ غير معروف"));
-          if (isDebugMode && data.debug) {
-            addDebugInfo(data.debug);
-          }
         }
       })
       .catch((error) => {
@@ -631,9 +417,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
-  /**
-   * Reorder a file
-   */
+  // Reorder a file
   function reorderFile(filename, newOrder) {
     const formData = new FormData();
     formData.append("reorder_file", "true");
@@ -650,13 +434,9 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((data) => {
         if (data.success) {
           showNotification("تم إعادة ترتيب الملف بنجاح");
-          // Refresh the file list
           navigateToFolder(currentPath);
         } else {
           alert("فشل في إعادة ترتيب الملف: " + (data.error || "خطأ غير معروف"));
-          if (isDebugMode && data.debug) {
-            addDebugInfo(data.debug);
-          }
         }
       })
       .catch((error) => {
@@ -665,24 +445,18 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
-  /**
-   * Show a notification
-   */
+  // Show a notification toast
   function showNotification(message) {
-    // Create notification element
     const notification = document.createElement("div");
     notification.className = "notification-toast";
     notification.innerHTML = `<div class="notification-content">${message}</div>`;
 
-    // Add to DOM
     document.body.appendChild(notification);
 
-    // Trigger animation
     setTimeout(() => {
       notification.classList.add("show");
     }, 10);
 
-    // Remove after delay
     setTimeout(() => {
       notification.classList.remove("show");
       setTimeout(() => {
@@ -691,25 +465,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 3000);
   }
 
-  /**
-   * Add debug information
-   */
-  function addDebugInfo(debugData) {
-    if (!isDebugMode) return;
-
-    const debugContainer = document.createElement("div");
-    debugContainer.className = "debug-info";
-    debugContainer.innerHTML = `
-            <h3>معلومات التصحيح</h3>
-            <pre>${JSON.stringify(debugData, null, 2)}</pre>
-        `;
-
-    filesContainer.insertAdjacentElement("afterend", debugContainer);
-  }
-
-  /**
-   * Update the current folder display
-   */
+  // Update the current folder display
   function updateCurrentFolder() {
     if (currentFolderDisplay) {
       const subjectNames = {

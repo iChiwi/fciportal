@@ -3,6 +3,4 @@ requests
 beautifulsoup4
 gunicorn
 flask_cors
-python-dotenv
-mysql-connector-python
 Werkzeug

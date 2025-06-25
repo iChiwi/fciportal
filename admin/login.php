@@ -1,7 +1,10 @@
 <?php
-require '../config.php';
 session_start();
 
+// Database connection | Ensure you have a config.php file with the correct database connection settings
+require '../config.php';
+
+// Check if the user is already logged in and verifying the session
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = trim($_POST['username']);
     $password = $_POST['password'];
@@ -20,6 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
+// Auto versioning for static files | Cache fix
 function auto_version($file) {
     if (file_exists($file)) {
         return $file . '?v=' . filemtime($file);
@@ -31,19 +35,23 @@ function auto_version($file) {
 <html lang="ar" dir="rtl">
 
 <head>
+    <!-- Metadata Information -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>تسجيل الدخول — بوابة الإدارة</title>
     <meta name="description" content="منصتك الشاملة للموارد والأدوات الأكاديمية لطلاب كلية الحاسبات والمعلومات" />
-    <link href="<?php echo auto_version('../static/css/main.css'); ?>" rel="stylesheet">
+    <!-- Website Information -->
+    <title>تسجيل الدخول — بوابة الإدارة</title>
+    <!-- Favicons & Stylesheets -->
     <link rel="apple-touch-icon" sizes="180x180" href="../static/img/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="../static/img/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="../static/img/favicon-16x16.png" />
     <link rel="manifest" href="../static/img/site.webmanifest" />
+    <link href="<?php echo auto_version('../static/css/main.css'); ?>" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 </head>
 
 <body>
+    <!-- Navigation Bar (Hamburger included for mobile) -->
     <nav class="nav-container">
         <div class="nav-content">
             <div class="hamburger" id="hamburger">
@@ -77,6 +85,7 @@ function auto_version($file) {
         </div>
     </nav>
 
+    <!-- Header Container -->
     <header>
         <div class="header-content">
             <h1>تسجيل دخول الإدارة</h1>
@@ -84,8 +93,10 @@ function auto_version($file) {
         </div>
     </header>
 
+    <!-- Main Content -->
     <main>
         <div class="container">
+            <!-- Login Section -->
             <section class="info-section">
                 <h2>
                     <i class="fas fa-sign-in-alt"></i>
@@ -111,6 +122,7 @@ function auto_version($file) {
         </div>
     </main>
 
+    <!-- Footer Message -->
     <footer class="copyright-footer">
         <p style="direction: ltr;">&copy; <?php echo date("Y"); ?> ichiwi.me</p>
     </footer>

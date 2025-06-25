@@ -1,6 +1,7 @@
 <?php
+// Database connection | Ensure you have a config.php file with the correct database connection settings
 header('Content-Type: application/json');
-require '../config.php'; // use your existing DB connection
+require '../config.php';
 
 // Get the category parameter
 $category = $_GET['category'] ?? '';

@@ -1,8 +1,8 @@
 <?php
-$host    = 'localhost';
-$db      = 'fci';
-$user    = 'ichiwi';
-$pass    = 'Lu#u48eYNM*R';
+$host    = 'ENTER HERE'; // Host Name
+$db      = 'ENTER HERE'; // Database Name
+$user    = 'ENTER HERE'; // Database Username
+$pass    = 'ENTER HERE'; // Database Password
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";

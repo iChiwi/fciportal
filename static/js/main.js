@@ -1,15 +1,4 @@
-/**
- * main.js - Main UI functionality for FCI website
- * Handles theme switching, mobile optimizations, navigation and UI enhancements
- */
-
 document.addEventListener("DOMContentLoaded", function () {
-  /**
-   * ===================================
-   * 1. ELEMENT SELECTORS
-   * ===================================
-   */
-
   // Navigation selectors
   const hamburger = document.querySelector(".hamburger");
   const navLinks = document.querySelector(".nav-content .nav-links");
@@ -17,11 +6,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // UI component selectors
   const allAnchorLinks = document.querySelectorAll('a[href^="#"]');
 
-  /**
-   * ===================================
-   * 2. NAVIGATION
-   * ===================================
-   */
   function initNavigation() {
     // Initialize hamburger menu
     if (hamburger && navLinks) {
@@ -76,11 +60,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  /**
-   * ===================================
-   * 4. CURSOR EFFECT
-   * ===================================
-   */
   function initCursorEffect() {
     // Skip cursor effect on touch devices
     if ("ontouchstart" in window) return;
@@ -107,12 +86,6 @@ document.addEventListener("DOMContentLoaded", function () {
       cursorEffect.classList.remove("clicking");
     });
   }
-
-  /**
-   * ===================================
-   * 4. EVENT LISTENERS & INITIALIZATION
-   * ===================================
-   */
   // Initialize all UI components
   initNavigation();
   initCursorEffect();

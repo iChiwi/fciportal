@@ -145,9 +145,8 @@
   }
 }
 
-// New folder and upload forms
-#new-folder-form,
-#inline-upload-form {
+// New folder forms
+#new-folder-form {
   @extend %admin-form-base;
 
   // Dark mode styles
@@ -174,31 +173,6 @@
 
 .form-group {
   margin-bottom: 1rem;
-}
-
-// Upload form specific styles
-#inline-upload-form {
-  .file-input-container {
-    position: relative;
-    margin-bottom: 1rem;
-
-    label {
-      display: block;
-      padding: 0.75rem 1rem;
-      border: 1px dashed darken($bg-dark, 10%);
-      border-radius: $border-radius-md;
-      background-color: $bg-dark;
-      color: lighten($text-dark, 10%);
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.2s;
-
-      &:hover {
-        border-color: $color-primary;
-        color: $color-primary;
-      }
-    }
-  }
 }
 
 // File browser component
@@ -384,35 +358,9 @@
       }
     }
   }
-
-  #upload-button {
-    background-color: $color-primary;
-    color: $color-white;
-    border: none;
-
-    &:hover {
-      background-color: darken($color-primary, 10%);
-    }
-  }
 }
 
 // Status and notifications
-#upload-status {
-  margin-top: 1rem;
-  padding: 0.75rem;
-  border-radius: $border-radius-md;
-
-  &.success-message {
-    background-color: color-light($color-success, 0.1);
-    color: darken($color-success, 10%);
-  }
-
-  &.error-message {
-    background-color: color-light($color-danger, 0.1);
-    color: $color-danger;
-  }
-}
-
 .notification-toast {
   position: fixed;
   bottom: 1.5rem;
@@ -512,8 +460,7 @@ html[dir="rtl"] {
   }
 
   // Form elements in RTL
-  #new-folder-form,
-  #inline-upload-form {
+  #new-folder-form {
     h3 i {
       margin-right: 0;
       margin-left: $spacing-sm;

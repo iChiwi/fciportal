@@ -1,5 +1,3 @@
-import os
-import mysql.connector
 from bs4 import BeautifulSoup
 import requests
 from flask import Flask, request, jsonify
@@ -7,18 +5,7 @@ from flask_cors import CORS
 from werkzeug.exceptions import HTTPException
 from urllib3.util.retry import Retry
 from requests.adapters import HTTPAdapter
-import dotenv
-from studentcode import search_by_national_number, extract_data, update_national_id
-
-# Database Configuration & Environment Variables
-dotenv.load_dotenv('/var/www/.env')
-
-db_config = {
-    'host': os.getenv('MYSQL_HOST'),
-    'user': os.getenv('MYSQL_USER'),
-    'password': os.getenv('MYSQL_PASSWORD'),
-    'database': 'fci',
-}
+from studentcode import search_by_national_number, extract_data
 
 # Creation of session to the target website
 def create_session():
@@ -258,7 +245,7 @@ def get_student_results(national_number):
     student_data["results_status"] = f"Successfully extracted {len(results)} course results" if results else "No results found"
     return student_data
 
-# Final routing for fci.ichiwi.me/api/studentresults
+# Final routing for /api/studentresults
 @app.route("/", methods=["POST"])
 def api_get_student_results():
     data = request.get_json(force=True)
@@ -270,12 +257,6 @@ def api_get_student_results():
 
     if "error" in result:
         return jsonify({"error": result["error"]}), 500
-        
-    if result["student_code"] != "N/A":
-        db_result = update_national_id(result["student_code"], national_number)
-        result["nationalssn_updated"] = db_result.get("success", False)
-    else:
-        result["nationalssn_updated"] = False
 
     return jsonify(result), 200
 @app.errorhandler(Exception)

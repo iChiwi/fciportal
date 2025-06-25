@@ -1,8 +1,5 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
+// Database connection | Ensure you have a config.php file with the correct database connection settings
 require_once 'config.php';
 $stmt = $pdo->query("
     SELECT notifications.message, notifications.created_at, admins.name AS admin_name
@@ -12,6 +9,7 @@ $stmt = $pdo->query("
 ");
 $notifications = $stmt->fetchAll();
 
+// Auto versioning for static files | Cache fix
 function auto_version($file) {
     if (file_exists($file)) {
         return $file . '?v=' . filemtime($file);
@@ -19,6 +17,7 @@ function auto_version($file) {
     return $file;
 }
 
+// Processing links in notification messages
 function processLinks($text) {    
     $processed = '';
     $position = 0;
@@ -48,6 +47,7 @@ function processLinks($text) {
     return $processed;
 }
 
+// Safely display notification messages
 function safeNotificationDisplay($message) {
     $escaped = htmlspecialchars($message);
     
@@ -60,19 +60,23 @@ function safeNotificationDisplay($message) {
 <html lang="ar" dir="rtl">
 
 <head>
+    <!-- Metadata Information -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>الصفحة الرئيسية — مساعد الطالب</title>
     <meta name="description" content="منصتك الشاملة للموارد والأدوات الأكاديمية لطلاب كلية الحاسبات والمعلومات" />
-    <link href="<?php echo auto_version('static/css/main.css'); ?>" rel="stylesheet">
+    <!-- Website Information -->
+    <title>الصفحة الرئيسية — مساعد الطالب</title>
+    <!-- Favicons & Stylesheets -->
     <link rel="apple-touch-icon" sizes="180x180" href="static/img/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="static/img/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="static/img/favicon-16x16.png" />
     <link rel="manifest" href="static/img/site.webmanifest" />
+    <link href="<?php echo auto_version('static/css/main.css'); ?>" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 </head>
 
 <body>
+    <!-- Navigation Bar (Hamburger included for mobile) -->
     <nav class="nav-container">
         <div class="nav-content">
             <div class="hamburger" id="hamburger">
@@ -80,8 +84,6 @@ function safeNotificationDisplay($message) {
                 <span></span>
                 <span></span>
             </div>
-
-
             <div class="nav-links" id="nav-links">
                 <a href="/study/" class="nav-button">
                     <i class="fas fa-book" aria-hidden="true"></i>
@@ -107,6 +109,7 @@ function safeNotificationDisplay($message) {
         </div>
     </nav>
 
+    <!-- Header Container -->
     <header>
         <div class="header-content">
             <h1>مساعد الطالب</h1>
@@ -114,8 +117,10 @@ function safeNotificationDisplay($message) {
         </div>
     </header>
 
+    <!-- Main Content -->
     <main>
         <div class="container">
+            <!-- Admin Notifications -->
             <section id="system-notifications">
                 <h2>
                     <i class="fas fa-bell"></i>
@@ -152,6 +157,7 @@ function safeNotificationDisplay($message) {
                 <?php endif; ?>
             </section>
 
+            <!-- Information -->
             <section class="info-section">
                 <h2>
                     <i class="fas fa-star"></i>
@@ -181,6 +187,7 @@ function safeNotificationDisplay($message) {
                 </div>
             </section>
 
+            <!-- Help Message -->
             <section class="info-section">
                 <h2>
                     <i class="fas fa-question-circle"></i>
@@ -208,6 +215,7 @@ function safeNotificationDisplay($message) {
         </div>
     </main>
 
+    <!-- Footer Message -->
     <footer class="copyright-footer">
         <p style="direction: ltr;">&copy; <?php echo date("Y"); ?> ichiwi.me</p>
     </footer>

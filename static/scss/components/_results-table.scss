@@ -185,6 +185,68 @@
   }
 }
 
+// GPA Calculator Component
+.gpa-calculator {
+  width: 100%;
+
+  // GPA Results
+  .gpa-results {
+    background-color: $container-light;
+    padding: $spacing-md;
+    border-radius: $border-radius-md;
+    margin-bottom: $spacing-lg;
+    border: 1px solid darken($bg-light, 15%);
+
+    .gpa-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: $spacing-sm;
+      padding-bottom: $spacing-sm;
+      border-bottom: 1px solid darken($bg-light, 15%);
+
+      &:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+      }
+
+      .gpa-label {
+        font-weight: 600;
+      }
+
+      .gpa-value {
+        font-weight: 600;
+
+        &.good {
+          color: $color-success;
+        }
+
+        &.warning {
+          color: $color-warning;
+        }
+
+        &.danger {
+          color: $color-danger;
+        }
+      }
+    }
+  }
+
+  // Information Message
+  .gpa-info {
+    margin-bottom: $spacing-lg;
+    padding: $spacing-md;
+    border-radius: $border-radius-md;
+    background-color: color-light($color-primary, 0.1);
+    border: 1px solid $color-primary;
+
+    p {
+      margin: 0;
+      color: color-dark($color-primary);
+    }
+  }
+}
+
 // GPA Value Display
 .gpa-value {
   font-weight: 600;
@@ -289,6 +351,35 @@ html[dir="rtl"] {
 
 // Mobile Responsive
 @include mobile {
+  .gpa-calculator {
+    .gpa-results {
+      padding: $spacing-sm;
+      margin-bottom: $spacing-md;
+
+      .gpa-row {
+        margin-bottom: $spacing-xs;
+        padding-bottom: $spacing-xs;
+
+        .gpa-label {
+          font-size: 0.9rem;
+        }
+
+        .gpa-value {
+          font-size: 0.9rem;
+        }
+      }
+    }
+
+    .gpa-info {
+      padding: $spacing-sm;
+      margin-bottom: $spacing-md;
+
+      p {
+        font-size: 0.9rem;
+      }
+    }
+  }
+
   .results-table-wrapper {
     overflow-x: visible;
     padding-bottom: 0;

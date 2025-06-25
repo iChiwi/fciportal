@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
+  // Data for official links and section links
   const categorySelect = document.getElementById("category-select");
   const sectionGroupSelect = document.getElementById("section-group-select");
   const linksContainer = document.getElementById("links-container");
@@ -33,6 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  // Populate section groups based on the selected category
   sectionGroupSelect.addEventListener("change", function () {
     const groupId = this.value;
     fetchLinks({ category: "section", group_code: groupId });
@@ -46,6 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
     fetchLinks({ category: "subject", subject_key: this.value });
   });
 
+  // Initial display of official links
   function displayOfficialLinks() {
     fetchLinks({ category: "official" });
     let html = '<div class="links-grid">';
@@ -61,6 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
     linksContainer.innerHTML = html;
   }
 
+  // Data for section links
   function displaySectionLinks(groupId, range) {
     let html = '<div class="links-grid">';
     for (let i = range.start; i <= range.end; i++) {
@@ -75,6 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
     linksContainer.innerHTML = html;
   }
 
+  // Data for subject links
   function displaySubjectLinks(subject) {
     let html = `
             <h3>${subject.name}</h3>
@@ -94,6 +99,7 @@ document.addEventListener("DOMContentLoaded", function () {
     linksContainer.innerHTML = html;
   }
 
+  // Fetch links based on selected category and parameters
   function fetchLinks(params) {
     const query = new URLSearchParams(params).toString();
     fetch(`getLinks.php?${query}`)
