@@ -1,6 +1,6 @@
 # Academic Portal
 
-A comprehensive academic platform designed specifically for FCI students, providing essential resources, administrative tools, and communication features.
+A comprehensive academic platform designed specifically for FCI students, providing essential resources, administrative tools, and communication features. This project is no longer maintained.
 
 ## 🚀 Features
 
